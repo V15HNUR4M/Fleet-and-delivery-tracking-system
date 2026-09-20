@@ -1,0 +1,332 @@
+[
+  {
+    "id": "snap_main_jsx_0",
+    "target": "docs/frontend/code/core/main.jsx.png",
+    "title": "Complete Source",
+    "file": "main.jsx"
+  },
+  {
+    "id": "snap_app_jsx_0",
+    "target": "docs/frontend/code/core/App.jsx_p1.png",
+    "title": "App.jsx \u2014 Part 1: Imports, Shell Layout & Core Routes",
+    "file": "App.jsx"
+  },
+  {
+    "id": "snap_app_jsx_1",
+    "target": "docs/frontend/code/core/App.jsx_p2.png",
+    "title": "App.jsx \u2014 Part 2: Module Routes & Protected Route Guards",
+    "file": "App.jsx"
+  },
+  {
+    "id": "snap_app_css_0",
+    "target": "docs/frontend/code/styles/App.css_p1.png",
+    "title": "App.css \u2014 Part 1: Layout Container, Shell & Sidebar Grid",
+    "file": "App.css"
+  },
+  {
+    "id": "snap_app_css_1",
+    "target": "docs/frontend/code/styles/App.css_p2.png",
+    "title": "App.css \u2014 Part 2: Main Content Area & Responsive Breakpoints",
+    "file": "App.css"
+  },
+  {
+    "id": "snap_index_css_0",
+    "target": "docs/frontend/code/styles/index.css_p1.png",
+    "title": "index.css \u2014 Part 1: Design Tokens, CSS Variables & Base Theme",
+    "file": "index.css"
+  },
+  {
+    "id": "snap_index_css_1",
+    "target": "docs/frontend/code/styles/index.css_p2.png",
+    "title": "index.css \u2014 Part 2: Component Styles, Tables, Cards & Modals",
+    "file": "index.css"
+  },
+  {
+    "id": "snap_index_css_2",
+    "target": "docs/frontend/code/styles/index.css_p3.png",
+    "title": "index.css \u2014 Part 3: Badges, Buttons, Form Inputs & Utilities",
+    "file": "index.css"
+  },
+  {
+    "id": "snap_package_json_0",
+    "target": "docs/frontend/code/config/package.json.png",
+    "title": "Complete Configuration",
+    "file": "package.json"
+  },
+  {
+    "id": "snap_vite_config_js_0",
+    "target": "docs/frontend/code/config/vite.config.js.png",
+    "title": "Vite Configuration & Reverse Proxy",
+    "file": "vite.config.js"
+  },
+  {
+    "id": "snap_index_html_0",
+    "target": "docs/frontend/code/config/index.html.png",
+    "title": "HTML Host Entry Document",
+    "file": "index.html"
+  },
+  {
+    "id": "snap_axios_js_0",
+    "target": "docs/frontend/code/api/axios.js.png",
+    "title": "Axios HTTP Client & JWT Interceptor",
+    "file": "api/axios.js"
+  },
+  {
+    "id": "snap_authApi_js_0",
+    "target": "docs/frontend/code/api/authApi.js.png",
+    "title": "Authentication API Endpoints",
+    "file": "api/authApi.js"
+  },
+  {
+    "id": "snap_vehicleApi_js_0",
+    "target": "docs/frontend/code/api/vehicleApi.js.png",
+    "title": "Vehicle Management REST API",
+    "file": "api/vehicleApi.js"
+  },
+  {
+    "id": "snap_driverApi_js_0",
+    "target": "docs/frontend/code/api/driverApi.js.png",
+    "title": "Driver Directory & Status REST API",
+    "file": "api/driverApi.js"
+  },
+  {
+    "id": "snap_orderApi_js_0",
+    "target": "docs/frontend/code/api/orderApi.js.png",
+    "title": "Order Lifecycle & Assignment REST API",
+    "file": "api/orderApi.js"
+  },
+  {
+    "id": "snap_trackingApi_js_0",
+    "target": "docs/frontend/code/api/trackingApi.js.png",
+    "title": "GPS Telemetry & Location History REST API",
+    "file": "api/trackingApi.js"
+  },
+  {
+    "id": "snap_AuthContext_jsx_0",
+    "target": "docs/frontend/code/auth/AuthContext.jsx.png",
+    "title": "JWT Session State & Role-Based Auth Context",
+    "file": "auth/AuthContext.jsx"
+  },
+  {
+    "id": "snap_ProtectedRoute_jsx_0",
+    "target": "docs/frontend/code/auth/ProtectedRoute.jsx.png",
+    "title": "Protected Route Guard & Session Check",
+    "file": "auth/ProtectedRoute.jsx"
+  },
+  {
+    "id": "snap_RoleGuard_jsx_0",
+    "target": "docs/frontend/code/auth/RoleGuard.jsx.png",
+    "title": "Role-Based Access Control Guard",
+    "file": "auth/RoleGuard.jsx"
+  },
+  {
+    "id": "snap_Sidebar_jsx_0",
+    "target": "docs/frontend/code/components/layout/Sidebar.jsx.png",
+    "title": "Navigation Sidebar with Role Filters",
+    "file": "components/layout/Sidebar.jsx"
+  },
+  {
+    "id": "snap_TopNavbar_jsx_0",
+    "target": "docs/frontend/code/components/layout/TopNavbar.jsx_p1.png",
+    "title": "TopNavbar.jsx \u2014 Part 1: Header, User Menu & Search",
+    "file": "components/layout/TopNavbar.jsx"
+  },
+  {
+    "id": "snap_TopNavbar_jsx_1",
+    "target": "docs/frontend/code/components/layout/TopNavbar.jsx_p2.png",
+    "title": "TopNavbar.jsx \u2014 Part 2: Notifications & Sign-Out Action",
+    "file": "components/layout/TopNavbar.jsx"
+  },
+  {
+    "id": "snap_StatusBadge_jsx_0",
+    "target": "docs/frontend/code/components/common/StatusBadge.jsx.png",
+    "title": "Semantic Status Badge Component",
+    "file": "components/common/StatusBadge.jsx"
+  },
+  {
+    "id": "snap_Pagination_jsx_0",
+    "target": "docs/frontend/code/components/common/Pagination.jsx.png",
+    "title": "Data Table Pagination Component",
+    "file": "components/common/Pagination.jsx"
+  },
+  {
+    "id": "snap_Modal_jsx_0",
+    "target": "docs/frontend/code/components/common/Modal.jsx.png",
+    "title": "Accessible Backdrop Modal Dialog",
+    "file": "components/common/Modal.jsx"
+  },
+  {
+    "id": "snap_ConfirmDialog_jsx_0",
+    "target": "docs/frontend/code/components/common/ConfirmDialog.jsx.png",
+    "title": "Action Confirmation Dialog",
+    "file": "components/common/ConfirmDialog.jsx"
+  },
+  {
+    "id": "snap_LoadingSkeleton_jsx_0",
+    "target": "docs/frontend/code/components/common/LoadingSkeleton.jsx.png",
+    "title": "Content Loading Skeleton Placeholder",
+    "file": "components/common/LoadingSkeleton.jsx"
+  },
+  {
+    "id": "snap_EmptyState_jsx_0",
+    "target": "docs/frontend/code/components/common/EmptyState.jsx.png",
+    "title": "Zero-Data Empty State View",
+    "file": "components/common/EmptyState.jsx"
+  },
+  {
+    "id": "snap_ErrorState_jsx_0",
+    "target": "docs/frontend/code/components/common/ErrorState.jsx.png",
+    "title": "API Error State Banner",
+    "file": "components/common/ErrorState.jsx"
+  },
+  {
+    "id": "snap_LoginPage_jsx_0",
+    "target": "docs/frontend/code/pages/LoginPage.jsx_p1.png",
+    "title": "LoginPage.jsx \u2014 Part 1: Auth State, Login & Register Handlers",
+    "file": "pages/Login/LoginPage.jsx"
+  },
+  {
+    "id": "snap_LoginPage_jsx_1",
+    "target": "docs/frontend/code/pages/LoginPage.jsx_p2.png",
+    "title": "LoginPage.jsx \u2014 Part 2: Form UI, OTP Toggle & Role Selector",
+    "file": "pages/Login/LoginPage.jsx"
+  },
+  {
+    "id": "snap_DashboardPage_jsx_0",
+    "target": "docs/frontend/code/pages/DashboardPage.jsx_p1.png",
+    "title": "DashboardPage.jsx \u2014 Part 1: Data Fetching & KPI Metric Cards",
+    "file": "pages/Dashboard/DashboardPage.jsx"
+  },
+  {
+    "id": "snap_DashboardPage_jsx_1",
+    "target": "docs/frontend/code/pages/DashboardPage.jsx_p2.png",
+    "title": "DashboardPage.jsx \u2014 Part 2: Fleet Status Chart & Active Deliveries",
+    "file": "pages/Dashboard/DashboardPage.jsx"
+  },
+  {
+    "id": "snap_VehiclesPage_jsx_0",
+    "target": "docs/frontend/code/pages/VehiclesPage.jsx_p1.png",
+    "title": "VehiclesPage.jsx \u2014 Part 1: State, Fetching & Filter Controls",
+    "file": "pages/Vehicles/VehiclesPage.jsx"
+  },
+  {
+    "id": "snap_VehiclesPage_jsx_1",
+    "target": "docs/frontend/code/pages/VehiclesPage.jsx_p2.png",
+    "title": "VehiclesPage.jsx \u2014 Part 2: Vehicle Inventory Table & Action Menu",
+    "file": "pages/Vehicles/VehiclesPage.jsx"
+  },
+  {
+    "id": "snap_VehiclesPage_jsx_2",
+    "target": "docs/frontend/code/pages/VehiclesPage.jsx_p3.png",
+    "title": "VehiclesPage.jsx \u2014 Part 3: Add/Edit Vehicle Modal Form",
+    "file": "pages/Vehicles/VehiclesPage.jsx"
+  },
+  {
+    "id": "snap_DriversPage_jsx_0",
+    "target": "docs/frontend/code/pages/DriversPage.jsx_p1.png",
+    "title": "DriversPage.jsx \u2014 Part 1: State, Availability Filter & Handlers",
+    "file": "pages/Drivers/DriversPage.jsx"
+  },
+  {
+    "id": "snap_DriversPage_jsx_1",
+    "target": "docs/frontend/code/pages/DriversPage.jsx_p2.png",
+    "title": "DriversPage.jsx \u2014 Part 2: Driver Directory Table & Modal Form",
+    "file": "pages/Drivers/DriversPage.jsx"
+  },
+  {
+    "id": "snap_OrdersPage_jsx_0",
+    "target": "docs/frontend/code/pages/OrdersPage.jsx_p1.png",
+    "title": "OrdersPage.jsx \u2014 Part 1: Status Filters, Search & State",
+    "file": "pages/Orders/OrdersPage.jsx"
+  },
+  {
+    "id": "snap_OrdersPage_jsx_1",
+    "target": "docs/frontend/code/pages/OrdersPage.jsx_p2.png",
+    "title": "OrdersPage.jsx \u2014 Part 2: Orders Table, Route Points & Status Badges",
+    "file": "pages/Orders/OrdersPage.jsx"
+  },
+  {
+    "id": "snap_OrdersPage_jsx_2",
+    "target": "docs/frontend/code/pages/OrdersPage.jsx_p3.png",
+    "title": "OrdersPage.jsx \u2014 Part 3: Create Order Modal & Form Validation",
+    "file": "pages/Orders/OrdersPage.jsx"
+  },
+  {
+    "id": "snap_OrderDetailPage_jsx_0",
+    "target": "docs/frontend/code/pages/OrderDetailPage.jsx_p1.png",
+    "title": "OrderDetailPage.jsx \u2014 Part 1: Fetching, Lifecycle Timeline & Order Info",
+    "file": "pages/OrderDetail/OrderDetailPage.jsx"
+  },
+  {
+    "id": "snap_OrderDetailPage_jsx_1",
+    "target": "docs/frontend/code/pages/OrderDetailPage.jsx_p2.png",
+    "title": "OrderDetailPage.jsx \u2014 Part 2: Assignment Details & Status Transitions",
+    "file": "pages/OrderDetail/OrderDetailPage.jsx"
+  },
+  {
+    "id": "snap_DispatchPage_jsx_0",
+    "target": "docs/frontend/code/pages/DispatchPage.jsx_p1.png",
+    "title": "DispatchPage.jsx \u2014 Part 1: Pending Queue, Driver & Vehicle Selectors",
+    "file": "pages/Dispatch/DispatchPage.jsx"
+  },
+  {
+    "id": "snap_DispatchPage_jsx_1",
+    "target": "docs/frontend/code/pages/DispatchPage.jsx_p2.png",
+    "title": "DispatchPage.jsx \u2014 Part 2: Dispatch Confirmation & Assignment Flow",
+    "file": "pages/Dispatch/DispatchPage.jsx"
+  },
+  {
+    "id": "snap_TrackingPage_jsx_0",
+    "target": "docs/frontend/code/pages/TrackingPage.jsx_p1.png",
+    "title": "TrackingPage.jsx \u2014 Part 1: Leaflet Map Setup & Driver Selector",
+    "file": "pages/Tracking/TrackingPage.jsx"
+  },
+  {
+    "id": "snap_TrackingPage_jsx_1",
+    "target": "docs/frontend/code/pages/TrackingPage.jsx_p2.png",
+    "title": "TrackingPage.jsx \u2014 Part 2: Live Polling, Telemetry HUD & Markers",
+    "file": "pages/Tracking/TrackingPage.jsx"
+  },
+  {
+    "id": "snap_TrackingPage_jsx_2",
+    "target": "docs/frontend/code/pages/TrackingPage.jsx_p3.png",
+    "title": "TrackingPage.jsx \u2014 Part 3: Location Breadcrumbs & History Table",
+    "file": "pages/Tracking/TrackingPage.jsx"
+  },
+  {
+    "id": "snap_AnalyticsPage_jsx_0",
+    "target": "docs/frontend/code/pages/AnalyticsPage.jsx.png",
+    "title": "Recharts Fleet KPIs & Performance Analytics",
+    "file": "pages/Analytics/AnalyticsPage.jsx"
+  },
+  {
+    "id": "snap_AdminPage_jsx_0",
+    "target": "docs/frontend/code/pages/AdminPage.jsx.png",
+    "title": "Admin System Dashboard & Service Status",
+    "file": "pages/Admin/AdminPage.jsx"
+  },
+  {
+    "id": "snap_NotFoundPage_jsx_0",
+    "target": "docs/frontend/code/pages/NotFoundPage.jsx.png",
+    "title": "404 Not Found Fallback View",
+    "file": "pages/NotFound/NotFoundPage.jsx"
+  },
+  {
+    "id": "snap_constants_index_js_0",
+    "target": "docs/frontend/code/constants/constants_index.js.png",
+    "title": "System Roles, Order Statuses & Options",
+    "file": "constants/index.js"
+  },
+  {
+    "id": "snap_types_index_js_0",
+    "target": "docs/frontend/code/constants/types_index.js.png",
+    "title": "Frontend Data Models & Type Contracts",
+    "file": "types/index.js"
+  },
+  {
+    "id": "snap_utils_index_js_0",
+    "target": "docs/frontend/code/utils/utils_index.js.png",
+    "title": "Formatting Helpers & Error Parsers",
+    "file": "utils/index.js"
+  }
+]

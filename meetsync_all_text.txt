@@ -1,0 +1,1640 @@
+==============================
+PAGE 1
+==============================
+APPLICATION DEVELOPMENT
+Design and Implementation of MeetSync:
+Smart Meeting Management Platform with AI Minutes
+using Spring Boot and React
+
+==============================
+PAGE 2
+==============================
+FOLDER STRUCTURE
+MEETSYNC PROJECT ROOT
+⌄📁 MeetS ync-Pr oject
+>📁 backend
+⌄📁 frontend
+>📁 dist
+>📁 node_modules
+>📁 src
+📄 .gitignore
+🌐 index.html
+📦 package.json
+🔒 package-lock.json
+⚡ vite.config.js
+📝 README.md
+FRONTEND PRODUCTION BUILD (DIST)
+⌄📁 dist
+⌄📁 assets
+🎨 index-CNmpkOlG.css
+⚡ index-a0y-9k8x.js
+🌐 index.html
+🖼 favicon.svg
+
+==============================
+PAGE 3
+==============================
+FOLDER STRUCTURE
+FRONTEND SOURCE DIRECTORY (SRC)
+⌄📁 src
+⌄📁 components
+⚛ ErrorBoundary.jsx
+⚛ Footer.jsx
+⚛ NavBar.jsx
+⚛ ProtectedR oute.jsx
+⌄📁 contexts
+⚛ AuthContext.jsx
+⌄📁 services
+📄 api.js
+🎨 App.css
+⚛ App.jsx
+🎨 index.css
+⚛ main.jsx
+API SERVICES & CONTEXT MODULES
+⌄📁 services
+📄 api.js (REST Clients, Normalizers & Interceptors)
+⌄📁 contexts
+⚛ AuthContext.jsx (JW T State, Login, Session Management)
+
+==============================
+PAGE 4
+==============================
+FOLDER STRUCTURE
+FRONTEND APPLICATION PAGES (SRC/PAGES)
+⌄📁 pages
+⚛ ActionItems.jsx
+⚛ Admin.jsx
+⚛ Analytics.jsx
+⚛ Dashboard.jsx
+⚛ Landing.jsx
+⚛ Login.jsx
+⚛ MeetingCalendar.jsx
+⚛ MeetingDetail.jsx
+⚛ Register.jsx
+ROUTING & ENTRY COMPONENTS
+⌄📁 routes & cor e
+⚛ ProtectedR oute.jsx (RBA C Authorization Guards)
+⚛ App.jsx (Client R outing & Layout Shell)
+⚛ main.jsx (R eact 18 DOM R oot Bootstrap)
+🌐 index.html (Single P age App Host)
+
+==============================
+PAGE 5
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+COMPONENTS
+/Components
+NavBar.jsx
+1importReact,{useState,useEffect,useRef}from'react';
+2import{NavLink,Link,useNavigate,useLocation}from'react-router-dom';
+3import{useAuth}from'../contexts/AuthContext';
+4import{api}from'../services/api';
+5import{
+6Zap,
+7Bell,
+8Sun,
+9Moon,
+10User,
+11LogOut,
+12Settings,
+13ChevronDown,
+14Check
+15}from'lucide-react';
+16
+17constNavBar=()=>{
+18 const{user,logout,can}=useAuth();
+19 constnavigate=useNavigate();
+20 constlocation=useLocation();
+21
+22// Theme management: default is 'dark' for app shell, 'light' for landing page
+23 const[theme,setTheme]=useState(()=>{
+24 if(location.pathname==='/')return'light';
+25 return'dark';
+26});
+27
+28 const[notifications,setNotifications]=useState([]);
+29 const[showNotifications,setShowNotifications]=useState(false);
+30 const[showProfileMenu,setShowProfileMenu]=useState(false);
+31
+32 constnotifRef=useRef(null);
+33 constprofileRef=useRef(null);
+34
+35// Sync theme to body element
+36useEffect(()=>{
+37 if(theme==='light'){
+38document.body.classList.add('light-theme');
+39}else{
+40document.body.classList.remove('light-theme');
+41}
+42},[theme]);
+43
+44// Auto-switch default theme on path change
+45useEffect(()=>{
+46 if(location.pathname==='/'){
+47setTheme('light');
+48}else{
+49setTheme('dark');
+50}
+51},[location.pathname]);
+52
+53// Load notifications if logged in
+54useEffect(()=>{
+55 if(user){
+56loadNotifications();
+57// Poll notifications every 30 seconds
+58 constinterval=setInterval(loadNotifications,30000);
+59 return()=>clearInterval(interval);
+60}else{
+61setNotifications([]);
+62}
+63},[user]);
+64
+65// Close dropdowns when clicking outside
+66useEffect(()=>{
+67 consthandleClickOutside=(event)=>{
+68 if(notifRef.current&&!notifRef.current.contains(event.target)){
+69setShowNotifications(false);
+70}
+71 if(profileRef.current&&!profileRef.current.contains(event.target)){
+72setShowProfileMenu(false);
+
+==============================
+PAGE 6
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+COMPONENTS
+/Components
+Footer.jsx
+1importReactfrom'react';
+2import{Link}from'react-router-dom';
+3
+4constFooter=()=>{
+5return(
+6<footerstyle={footerStyle}>
+7<divstyle={containerStyle}>
+8<pstyle={copyStyle}>&copy;2026MeetSync.Allrightsreserved./p>
+9<divstyle={linksStyle}>
+10 <ahref="#privacy"style={linkStyle}>PrivacyPolicy/a>
+11 <ahref="#terms"style={linkStyle}>TermsofService/a>
+12 <ahref="#support"style={linkStyle}>Support/a>
+13/div>
+14/div>
+15/footer>
+16);
+17};
+18
+19constfooterStyle={
+20backgroundColor:'var(--bg-sidebar)',
+21borderTop:'1px solid var(--border-color)',
+22padding:'24px 0',
+23marginTop:'auto',
+24width:'100%',
+25transition:'var(--transition-fast)'
+26};
+27
+28constcontainerStyle={
+29maxWidth:'1400px',
+30margin:'0 auto',
+31padding:'0 24px',
+32display:'flex',
+33flexDirection:'column',
+34alignItems:'center',
+35justifyContent:'space-between',
+36gap:'12px',
+37width:'100%',
+38'@media (min-width: 640px)':{
+39flexDirection:'row'
+40}
+41};
+42
+43constcopyStyle={
+44fontSize:'0.8125rem',
+45color:'var(--text-muted)'
+
+==============================
+PAGE 7
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+COMPONENTS
+/Components
+ProtectedRoute.jsx
+1importReactfrom'react';
+2import{Navigate,useLocation}from'react-router-dom';
+3import{useAuth}from'../contexts/AuthContext';
+4import{ShieldAlert}from'lucide-react';
+5
+6constProtectedRoute=({children,requiredPermission})=>{
+7const{user,loading,can}=useAuth();
+8constlocation=useLocation();
+9
+10if(loading){
+11 return(
+12<divstyle={spinnerContainerStyle}>
+13<divstyle={spinnerStyle}></div>
+14<pstyle={{marginTop:'16px',color:'var(--text-secondary)'}}>Verifyingcredent
+ials.../p>
+15/div>
+16);
+17}
+18
+19if(!user){
+20 // Redirect to login but save the current location they tried to go to
+21 return<Navigateto="/login"state={{from:location}}replace/>;
+22}
+23
+24if(requiredPermission&&!can(requiredPermission)){
+25 // Render an Access Denied view inside the app shell
+26 return(
+27<divstyle={accessDeniedStyle}>
+28<divclassName="card"style={{maxWidth:'500px',margin:'80px auto',textAlign:
+'center',padding:'40px 24px'}}>
+29 <divstyle={{display:'inline-flex',padding:'16px',borderRadius:'50%',back
+groundColor:'rgba(239, 68, 68, 0.1)',color:'#ef4444',marginBottom:'20px'}}>
+30 <ShieldAlertsize={48}/>
+31 /div>
+32 <h2style={{marginBottom:'12px'}}>AccessDenied/h2>
+33 <pstyle={{color:'var(--text-secondary)',marginBottom:'24px',lineHeight:
+'1.6'}}>
+34 Youraccountrole<strong>({user.role})/strong> does not have permission to a
+ccess the <strong>{requiredPermission.replace('_', ' ')}</strong> feature.
+35 /p>
+36 <ahref="/dashboard"className="btn btn-primary"style={{display:'inline-flex'
+}}>
+37 BacktoDashboard
+38 /a>
+39/div>
+40/div>
+41);
+42}
+43
+44returnchildren;
+45};
+46
+47constspinnerContainerStyle={
+48display:'flex',
+
+==============================
+PAGE 8
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+COMPONENTS
+/Components
+ErrorBoundary.jsx
+1importReact,{Component}from'react';
+2import{AlertCircle,RotateCcw}from'lucide-react';
+3
+4classErrorBoundaryextendsComponent{
+5constructor(props){
+6 super(props);
+7 this.state={hasError:false,error:null};
+8}
+9
+10staticgetDerivedStateFromError(error){
+11 return{hasError:true,error};
+12}
+13
+14componentDidCatch(error,errorInfo){
+15console.error('ErrorBoundary caught an unhandled exception:',error,errorInfo);
+16}
+17
+18handleReset=()=>{
+19 this.setState({hasError:false,error:null});
+20window.location.href='/dashboard';
+21};
+22
+23render(){
+24 if(this.state.hasError){
+25 return(
+26<divstyle={errorContainerStyle}>
+27 <divclassName="card"style={{maxWidth:'600px',width:'90%',padding:'40px 2
+4px',textAlign:'center'}}>
+28 <divstyle={{display:'inline-flex',padding:'16px',borderRadius:'50%',ba
+ckgroundColor:'rgba(239, 68, 68, 0.1)',color:'#ef4444',marginBottom:'20px'}}>
+29 <AlertCirclesize={48}/>
+30 /div>
+31 <h2style={{marginBottom:'16px'}}>Somethingwentwrong/h2>
+32 <pstyle={{color:'var(--text-secondary)',marginBottom:'24px',lineHeight:
+'1.6'}}>
+33 Anunexpectedruntimeerrorhasoccurredintheapplicationshell.Oursyste
+mshavebeennotified.
+34 /p>
+35 <divstyle={errorBoxStyle}>
+36 {this.state.error&&this.state.error.toString()}
+37 /div>
+38 <divstyle={{display:'flex',gap:'12px',justifyContent:'center'}}>
+39 <buttonclassName="btn btn-primary"onClick={this.handleReset}>
+40 <RotateCcwsize={16}/>ReturntoDashboard
+41 /button>
+42 <buttonclassName="btn btn-secondary"onClick={()=>window.location.reload
+()}>
+43 ReloadPage
+44 /button>
+45 /div>
+
+==============================
+PAGE 9
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+CONTE XT
+Cont ext
+AuthContext.jsx
+1importReact,{createContext,useState,useEffect,useContext,useRef}from'react';
+2import{api}from'../services/api';
+3
+4constAuthContext=createContext(null);
+5
+6// Permission Check Helper
+7// Driven by the MeetSync Permission Matrix (SRS Appendix A)
+8constpermissionMatrix={
+9GUEST:{
+10view_meetings:false,
+11schedule_meeting:false,
+12view_minutes:false,
+13approve_minutes:false,
+14manage_action_items:false,
+15view_analytics:false,
+16manage_rooms:false,
+17manage_system:false,
+18},
+19ATTENDEE:{
+20view_meetings:true,
+21schedule_meeting:'LIMITED',// Can schedule virtual only, no room bookings
+22view_minutes:true,
+23approve_minutes:false,
+24manage_action_items:true,
+25view_analytics:false,
+26manage_rooms:false,
+27manage_system:false,
+28},
+29ORGANISER:{
+30view_meetings:true,
+31schedule_meeting:true,
+32view_minutes:true,
+33approve_minutes:true,
+34manage_action_items:true,
+35view_analytics:'LIMITED',// Limited reports
+36manage_rooms:false,
+37manage_system:false,
+38},
+39MANAGER:{
+40view_meetings:true,
+41schedule_meeting:true,
+42view_minutes:true,
+43approve_minutes:true,
+44manage_action_items:true,
+45view_analytics:true,
+46manage_rooms:true,
+47manage_system:false,
+48},
+49ADMIN:{
+50view_meetings:true,
+51schedule_meeting:true,
+52view_minutes:true,
+53approve_minutes:true,
+54manage_action_items:true,
+55view_analytics:true,
+56manage_rooms:true,
+57manage_system:true,
+58}
+59};
+60
+61exportconstcan=(role,action)=>{
+62if(!role||!permissionMatrix[role])returnfalse;
+63returnpermissionMatrix[role][action]||false;
+64};
+
+==============================
+PAGE 10
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+Landing.jsx
+1importReactfrom'react';
+2import{Link}from'react-router-dom';
+3import{
+4Zap,
+5Calendar,
+6FileText,
+7CheckSquare,
+8BarChart3,
+9Users,
+10ArrowRight,
+11ShieldCheck,
+12Quote
+13}from'lucide-react';
+14
+15constLanding=()=>{
+16 return(
+17<divstyle={landingStyle}>
+18{/* Hero Section */}
+19<sectionstyle={heroSectionStyle}>
+20<divstyle={heroContainerStyle}>
+21 <h1className="hero-headline"style={{marginBottom:'24px'}}>
+22 Stoplosingtimeto<br/>
+23 <span>unproductive/span> meetings.
+24 /h1>
+25 <pstyle={heroSubtextStyle}>
+26 MeetSyncautomatescalendarcoordination,generatespreciseAImeetingminutes,andtracksacti
+onitemstocompletion.Reclaim20%ofyourworkweek.
+27 /p>
+28 <divstyle={heroCtaStyle}>
+29 <Linkto="/register"className="btn btn-primary"style={ctaPrimaryStyle}>
+30 GetStartedforFree<ArrowRightsize={18}/>
+31 /Link>
+32 <ahref="#features"className="btn btn-secondary"style={ctaSecondaryStyle}>
+33 SeeHowItWorks
+34 /a>
+35 /div>
+36/div>
+37/section>
+38
+39{/* Feature Grid */}
+40<sectionid="features"style={sectionStyle}>
+41<divstyle={containerStyle}>
+42 <divstyle={sectionHeaderStyle}>
+43 <spanclassName="badge badge-scheduled"style={{marginBottom:'12px'}}>ProductCapabilities/
+span>
+44 <h2>Designedformodern,high-velocityteams/h2>
+45 <pstyle={sectionSubtextStyle}>Everythingyouneedtotransformconversationsintostructured,
+trackableexecutions./p>
+46 /div>
+47
+48 <divstyle={gridStyle}>
+49 <divclassName="card"style={featureCardStyle}>
+50 <divstyle={featureIconStyle}>
+51 <Calendarsize={24}/>
+52 /div>
+53 <h3style={featureTitleStyle}>Conflict-FreeScheduling/h3>
+54 <pstyle={featureDescriptionStyle}>
+55 Quicklyschedulehybridmeetings.Automaticallycheckparticipantavailability,resolvesch
+edulingconflicts,andassignmeetingroomsinstantly.
+56 /p>
+57 /div>
+58
+59 <divclassName="card"style={featureCardStyle}>
+60 <divstyle={{...featureIconStyle,color:'var(--color-in-progress)',backgroundColor:'rgba
+(16, 185, 129, 0.1)'}}>
+61 <Zapsize={24}/>
+62 /div>
+63 <h3style={featureTitleStyle}>AIminutesGeneration/h3>
+64 <pstyle={featureDescriptionStyle}>
+65 Generatehighlyaccuratesummaries,logcoreorganizationaldecisions,andlistactionable
+takeawaysimmediatelyaftermeetingsconclude.
+66 /p>
+
+==============================
+PAGE 11
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+Login.jsx
+1importReact,{useState}from'react';
+2import{useNavigate,useLocation,Link}from'react-router-dom';
+3import{useAuth}from'../contexts/AuthContext';
+4import{Zap,Eye,EyeOff,AlertCircle}from'lucide-react';
+5
+6constLogin=()=>{
+7const{login}=useAuth();
+8constnavigate=useNavigate();
+9constlocation=useLocation();
+10
+11const[email,setEmail]=useState('');
+12const[password,setPassword]=useState('');
+13const[showPassword,setShowPassword]=useState(false);
+14const[error,setError]=useState('');
+15const[loading,setLoading]=useState(false);
+16
+17// Where to redirect after login (default is /dashboard)
+18constfrom=location.state.from.pathname||'/dashboard';
+19
+20consthandleSubmit=async(e)=>{
+21e.preventDefault();
+22setError('');
+23
+24 if(!email||!password){
+25setError('Please fill in all fields.');
+26 return;
+27}
+28
+29setLoading(true);
+30 try{
+31 awaitlogin(email,password);
+32// Success redirect
+33navigate(from,{replace:true});
+34}catch(err){
+35setError(err.message||'Invalid credentials. Please check your email and password.');
+36}finally{
+37setLoading(false);
+38}
+39};
+40
+41return(
+42<divstyle={containerStyle}>
+43<divclassName="card"style={loginCardStyle}>
+44{/* Brand Header */}
+45<divstyle={{textAlign:'center',marginBottom:'32px'}}>
+46 <divstyle={logoBadgeStyle}>
+47 <Zapsize={24}fill="#ffffff"stroke="none"/>
+48 /div>
+49 <h2style={{fontSize:'1.75rem',fontWeight:800,marginTop:'16px'}}>Welcomeback/h2>
+50 <pstyle={{color:'var(--text-secondary)',fontSize:'0.875rem',marginTop:'4px'}}>
+51 SignintoaccessyourMeetSyncdashboard
+52 /p>
+53/div>
+54
+55{/* Error Alert */}
+56{error&&(
+57 <divclassName="warning-banner"style={{borderLeftColor:'var(--color-cancelled)',color:
+'var(--color-cancelled)',backgroundColor:'rgba(239, 68, 68, 0.08)'}}>
+58 <AlertCirclesize={18}style={{flexShrink:0}}/>
+59 <span>{error}/span>
+60 /div>
+61)}
+62
+63{/* Form */}
+
+==============================
+PAGE 12
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+Register.jsx
+21 const{register}=useAuth();
+22 constnavigate=useNavigate();
+23
+24// Step state
+25 const[step,setStep]=useState(1);
+26 const[loading,setLoading]=useState(false);
+27 const[successMsg,setSuccessMsg]=useState('');
+28 const[errorMsg,setErrorMsg]=useState('');
+29
+30// Form Fields
+31 const[name,setName]=useState('');
+32 const[email,setEmail]=useState('');
+33 const[phone,setPhone]=useState('');
+34 const[password,setPassword]=useState('');
+35 const[confirmPassword,setConfirmPassword]=useState('');
+36 const[role,setRole]=useState('ATTENDEE');
+37
+38// Role specific fields
+39 const[department,setDepartment]=useState('');
+40 const[organization,setOrganization]=useState('');
+41 const[guestReason,setGuestReason]=useState('');
+42
+43// Validation States
+44 const[errors,setErrors]=useState({});
+45 const[emailChecking,setEmailChecking]=useState(false);
+46 const[emailIsUnique,setEmailIsUnique]=useState(true);
+47 const[showPassword,setShowPassword]=useState(false);
+48
+49// Debouncing email check
+50 constemailTimerRef=useRef(null);
+51
+52useEffect(()=>{
+53 if(!email){
+54setEmailIsUnique(true);
+55 return;
+56}
+57
+58// Simple email regex check
+59 constemailRegex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+60 if(!emailRegex.test(email)){
+61setErrors(prev=>({...prev,email:"Please enter a valid email address"}));
+62 return;
+63}else{
+64setErrors(prev=>{
+65 constcopy={...prev};
+66deletecopy.email;
+67 returncopy;
+68});
+69}
+70
+71 if(emailTimerRef.current)clearTimeout(emailTimerRef.current);
+72
+73setEmailChecking(true);
+74emailTimerRef.current=setTimeout(async()=>{
+75 try{
+76 constisUnique=awaitapi.auth.checkEmailUnique(email);
+77setEmailIsUnique(isUnique);
+78 if(!isUnique){
+79 setErrors(prev=>({...prev,email:"This email is already registered"}));
+80}else{
+81 setErrors(prev=>{
+82 constcopy={...prev};
+83 deletecopy.email;
+84 returncopy;
+85 });
+86}
+87}catch(e){
+88console.error("Failed to check email uniqueness",e);
+89}finally{
+90setEmailChecking(false);
+91}
+92},500);
+
+==============================
+PAGE 13
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+Dashboard.jsx
+1importReact,{useState,useEffect}from'react';
+2import{useNavigate,Link}from'react-router-dom';
+3import{useAuth}from'../contexts/AuthContext';
+4import{api}from'../services/api';
+5import{
+6Calendar,
+7CheckSquare,
+8AlertTriangle,
+9Clock,
+10Plus,
+11ArrowRight,
+12Video,
+13MapPin,
+14Users,
+15Activity,
+16Sparkles,
+17ShieldAlert,
+18ClipboardList
+19}from'lucide-react';
+20
+21constDashboard=()=>{
+22 const{user,can}=useAuth();
+23 constnavigate=useNavigate();
+24
+25 const[loading,setLoading]=useState(true);
+26 const[meetings,setMeetings]=useState([]);
+27 const[actionItems,setActionItems]=useState([]);
+28 const[auditLogs,setAuditLogs]=useState([]);
+29 const[summary,setSummary]=useState({
+30totalMeetings:0,
+31avgDuration:0,
+32actionCompletionPct:0,
+33avgAttendees:0
+34});
+35
+36useEffect(()=>{
+37loadDashboardData();
+38},[]);
+39
+40 constloadDashboardData=async()=>{
+41setLoading(true);
+42 try{
+43 constallMeetings=awaitapi.meetings.getAll();
+44 constallActions=awaitapi.actionItems.getAll();
+45 constlogs=awaitapi.auditLogs.getAll();
+46 conststats=awaitapi.analytics.getSummary();
+47
+48setMeetings(allMeetings);
+49setActionItems(allActions);
+50setAuditLogs(logs.slice(0,5));// show latest 5 logs
+51setSummary(stats);
+52}catch(e){
+53console.error("Failed to load dashboard data",e);
+54}finally{
+55setLoading(false);
+56}
+57};
+58
+59// Determine greeting
+60 constgetGreeting=()=>{
+61 consthrs=newDate().getHours();
+62 if(hrs<12)return'Good morning';
+63 if(hrs<17)return'Good afternoon';
+64 return'Good evening';
+65};
+66
+67// Calculations for current user
+68 constuserActions=actionItems.filter(item=>item.owner_id===user.id);
+69 constpendingActionsCount=userActions.filter(item=>item.status==='OPEN'||item.status==='IN_PROG
+RESS').length;
+70 constoverdueActionsCount=userActions.filter(item=>item.status==='OVERDUE'||(item.status!=='COM
+PLETED'&&newDate(item.due_date)<newDate())).length;
+
+==============================
+PAGE 14
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+MeetingCalendar.jsx
+1importReact,{useState,useEffect}from'react';
+2import{useLocation,useNavigate}from'react-router-dom';
+3import{useAuth}from'../contexts/AuthContext';
+4import{api}from'../services/api';
+5import{
+6CalendarasCalendarIcon,
+7ChevronLeft,
+8ChevronRight,
+9Plus,
+10Video,
+11MapPin,
+12Users,
+13X,
+14AlertTriangle,
+15Info,
+16Clock,
+17Sparkles,
+18Link2
+19}from'lucide-react';
+20
+21constMeetingCalendar=()=>{
+22 const{user}=useAuth();
+23 constlocation=useLocation();
+24 constnavigate=useNavigate();
+25
+26// Calendar view states
+27 const[viewMode,setViewMode]=useState('week');// 'week' | 'month'
+28 const[currentDate,setCurrentDate]=useState(newDate());
+29 const[meetings,setMeetings]=useState([]);
+30 const[rooms,setRooms]=useState([]);
+31 const[usersList,setUsersList]=useState([]);
+32
+33// Scheduler Panel state
+34 const[isOpenScheduler,setIsOpenScheduler]=useState(false);
+35 const[submitting,setSubmitting]=useState(false);
+36
+37// Form Fields
+38 const[title,setTitle]=useState('');
+39 const[date,setDate]=useState('');
+40 const[time,setTime]=useState('');
+41 const[duration,setDuration]=useState('60');
+42 const[mode,setMode]=useState('VIRTUAL');// VIRTUAL | IN_PERSON | HYBRID
+43 const[roomId,setRoomId]=useState('');
+44 const[selectedParticipants,setSelectedParticipants]=useState([]);
+45 const[description,setDescription]=useState('');
+46
+47// Conflict warning state
+48 const[conflictWarning,setConflictWarning]=useState('');
+49 const[error,setError]=useState('');
+50 const[videoLink,setVideoLink]=useState('');
+51
+52useEffect(()=>{
+53loadData();
+54// Check if redirect state requested opening scheduler
+55 if(location.state.openScheduler){
+56setIsOpenScheduler(true);
+57// Clean state
+58window.history.replaceState({},document.title);
+59}
+60},[location]);
+61
+62// Run conflict check whenever time, duration, date, or participants change
+63useEffect(()=>{
+64 if(date&&time&&selectedParticipants.length>0){
+65checkConflicts();
+66}else{
+67setConflictWarning('');
+68}
+69},[date,time,duration,selectedParticipants]);
+70
+71// Auto generate video link
+72useEffect(()=>{
+
+==============================
+PAGE 15
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+MeetingDetail.jsx
+26
+27constMeetingDetail=()=>{
+28 const{id}=useParams();
+29 constnavigate=useNavigate();
+30 const{user,can}=useAuth();
+31
+32// State Management
+33 const[meeting,setMeeting]=useState(null);
+34 const[minutes,setMinutes]=useState(null);
+35 const[actionItems,setActionItems]=useState([]);
+36 const[attachments,setAttachments]=useState([]);
+37 const[activeTab,setActiveTab]=useState('overview');// overview | minutes | actions | attachments
+38 const[loading,setLoading]=useState(true);
+39 const[generatingMinutes,setGeneratingMinutes]=useState(false);
+40 const[allUsers,setAllUsers]=useState([]);
+41
+42// Action item form state
+43 const[showAddAction,setShowAddAction]=useState(false);
+44 const[actionDesc,setActionDesc]=useState('');
+45 const[actionOwner,setActionOwner]=useState('');
+46 const[actionDue,setActionDue]=useState('');
+47 const[actionPriority,setActionPriority]=useState('MEDIUM');
+48
+49// Attachment upload mock state
+50 const[showUpload,setShowUpload]=useState(false);
+51 const[fileName,setFileName]=useState('');
+52 const[fileSizeStr,setFileSizeStr]=useState('1.5 MB');
+53
+54useEffect(()=>{
+55loadMeetingDetails();
+56},[id]);
+57
+58 constloadMeetingDetails=async()=>{
+59setLoading(true);
+60 try{
+61 constmeet=awaitapi.meetings.getById(id);
+62 constmin=awaitapi.minutes.getByMeetingId(id);
+63 constactions=awaitapi.actionItems.getByMeetingId(id);
+64 constdocs=awaitapi.documents.getByMeetingId(id);
+65 constusers=awaitapi.users.getAll();
+66
+67setMeeting(meet);
+68setMinutes(min);
+69setActionItems(actions);
+70setAttachments(docs);
+71setAllUsers(users);
+72
+73// Default owner to first user if loaded
+74 if(users.length>0){
+75setActionOwner(users[0].id.toString());
+76}
+77}catch(e){
+78console.error("Failed to load meeting details",e);
+79}finally{
+80setLoading(false);
+81}
+82};
+83
+84 consthandleGenerateMinutes=async()=>{
+85setGeneratingMinutes(true);
+86 try{
+87 constnewMinutes=awaitapi.minutes.generate(meeting.id,user.id);
+88setMinutes(newMinutes);
+89}catch(e){
+90alert("Error generating minutes: "+e.message);
+91}finally{
+92setGeneratingMinutes(false);
+93}
+94};
+95
+96 consthandleApproveMinutes=async()=>{
+97 if(!minutes)return;
+
+==============================
+PAGE 16
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+ActionItems.jsx
+1importReact,{useState,useEffect}from'react';
+2import{useAuth}from'../contexts/AuthContext';
+3import{api}from'../services/api';
+4import{
+5CheckSquare,
+6List,
+7KanbanSquare,
+8Search,
+9Plus,
+10Calendar,
+11User,
+12ChevronRight,
+13ChevronLeft,
+14ArrowUpDown,
+15X,
+16AlertCircle
+17}from'lucide-react';
+18
+19constActionItems=()=>{
+20 const{user,can}=useAuth();
+21
+22// State Management
+23 const[actionItems,setActionItems]=useState([]);
+24 const[meetings,setMeetings]=useState([]);
+25 const[usersList,setUsersList]=useState([]);
+26 const[loading,setLoading]=useState(true);
+27
+28// Filtering & View state
+29 const[viewMode,setViewMode]=useState('kanban');// kanban | table
+30 const[searchQuery,setSearchQuery]=useState('');
+31 const[statusFilter,setStatusFilter]=useState('ALL');// ALL | OPEN | IN_PROGRESS | OVERDUE | COMPLETE
+D
+32 const[sortField,setSortField]=useState('due_date');
+33 const[sortAsc,setSortAsc]=useState(true);
+34
+35// Add item modal state
+36 const[showAddModal,setShowAddModal]=useState(false);
+37 const[newDesc,setNewDesc]=useState('');
+38 const[newOwner,setNewOwner]=useState('');
+39 const[newMeetingId,setNewMeetingId]=useState('');
+40 const[newDue,setNewDue]=useState('');
+41 const[newPriority,setNewPriority]=useState('MEDIUM');
+42
+43useEffect(()=>{
+44loadActionItemsData();
+45},[]);
+46
+47 constloadActionItemsData=async()=>{
+48setLoading(true);
+49 try{
+50 constactions=awaitapi.actionItems.getAll();
+51 constmeets=awaitapi.meetings.getAll();
+52 constusers=awaitapi.users.getAll();
+53
+54setActionItems(actions);
+55setMeetings(meets);
+56setUsersList(users);
+57
+58 if(meets.length>0)setNewMeetingId(meets[0].id.toString());
+59 if(users.length>0)setNewOwner(users[0].id.toString());
+60}catch(e){
+61console.error("Failed to load actions data",e);
+62}finally{
+63setLoading(false);
+64}
+65};
+66
+67 consthandleUpdateStatus=async(itemId,nextStatus)=>{
+68// Optimistic state update
+69 constpreviousItems=[...actionItems];
+70setActionItems(prev=>prev.map(item=>item.id===itemId?{...item,status:nextStatus}:item));
+71
+
+==============================
+PAGE 17
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+Analytics.jsx
+1importReact,{useState,useEffect}from'react';
+2import{api}from'../services/api';
+3import{
+4BarChart3,
+5Calendar,
+6Percent,
+7Users,
+8Clock,
+9Download,
+10ChevronDown,
+11TrendingUp,
+12PieChart,
+13FileSpreadsheet
+14}from'lucide-react';
+15
+16constAnalytics=()=>{
+17 const[loading,setLoading]=useState(true);
+18 const[meetings,setMeetings]=useState([]);
+19 const[actionItems,setActionItems]=useState([]);
+20 const[summary,setSummary]=useState({
+21totalMeetings:0,
+22avgDuration:0,
+23actionCompletionPct:0,
+24avgAttendees:0
+25});
+26
+27// Filter States
+28 const[period,setPeriod]=useState('7_weeks');
+29 const[department,setDepartment]=useState('ALL');
+30
+31useEffect(()=>{
+32loadAnalyticsData();
+33},[]);
+34
+35 constloadAnalyticsData=async()=>{
+36setLoading(true);
+37 try{
+38 constallMeetings=awaitapi.meetings.getAll();
+39 constallActions=awaitapi.actionItems.getAll();
+40 conststats=awaitapi.analytics.getSummary();
+41
+42setMeetings(allMeetings);
+43setActionItems(allActions);
+44setSummary(stats);
+45}catch(e){
+46console.error("Failed to load analytics data",e);
+47}finally{
+48setLoading(false);
+49}
+50};
+51
+52// Generate CSV download
+53 consthandleExportCSV=()=>{
+54 constcsvRows=[
+55['Meeting Title','Date','Duration (Mins)','Attendees Count','Action Items Count','Completion %',
+'SLA Status']
+56];
+57
+58slaReportData.forEach(row=>{
+59csvRows.push([
+60`"${row.title.replace(/"/g,'""')}"`,
+61row.date,
+62row.duration,
+63row.attendees,
+64row.actionsCount,
+65`${row.completionPct}%`,
+66row.sla
+67]);
+68});
+69
+70 constcsvContent="data:text/csv;charset=utf-8,"
+71+csvRows.map(e=>e.join(",")).join("\n");
+
+==============================
+PAGE 18
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+PAGES
+/Pages
+Admin.jsx
+26 const{user}=useAuth();
+27
+28// Tab states
+29 const[subTab,setSubTab]=useState('users');// users | config | logs | health
+30
+31// Data states
+32 const[usersList,setUsersList]=useState([]);
+33 const[auditLogs,setAuditLogs]=useState([]);
+34 const[loading,setLoading]=useState(true);
+35
+36// Search filter for users
+37 const[searchUser,setSearchUser]=useState('');
+38
+39// Add User Form state
+40 const[showAddUser,setShowAddUser]=useState(false);
+41 const[newName,setNewName]=useState('');
+42 const[newEmail,setNewEmail]=useState('');
+43 const[newPhone,setNewPhone]=useState('');
+44 const[newRole,setNewRole]=useState('ATTENDEE');
+45 const[newPassword,setNewPassword]=useState('Password123!');
+46
+47// Config form states
+48 const[sessionTimeout,setSessionTimeout]=useState('30');
+49 const[aiModel,setAiModel]=useState('meetsync-minutes-v2');
+50 const[maxFileSize,setMaxFileSize]=useState('20');
+51 const[rateLimit,setRateLimit]=useState('100');
+52
+53useEffect(()=>{
+54loadAdminData();
+55},[]);
+56
+57 constloadAdminData=async()=>{
+58setLoading(true);
+59 try{
+60 constusers=awaitapi.users.getAll();
+61 constlogs=awaitapi.auditLogs.getAll();
+62setUsersList(users);
+63setAuditLogs(logs);
+64}catch(e){
+65console.error("Failed to load admin data",e);
+66}finally{
+67setLoading(false);
+68}
+69};
+70
+71 consthandleToggleStatus=async(targetUserId)=>{
+72 try{
+73 awaitapi.users.toggleStatus(targetUserId,user.id);
+74loadAdminData();// Refresh list
+75}catch(e){
+76alert("Error toggling status: "+e.message);
+77}
+78};
+79
+80 consthandleRoleChange=async(targetUserId,newRole)=>{
+81 try{
+82 awaitapi.users.updateRole(targetUserId,newRole,user.id);
+83loadAdminData();
+84}catch(e){
+85alert("Error updating role: "+e.message);
+86}
+87};
+88
+89 consthandleAddUserSubmit=async(e)=>{
+90e.preventDefault();
+91 if(!newName.trim()||!newEmail.trim()||!newPhone.trim()){
+92alert("Please fill in all user details");
+93 return;
+94}
+95
+96 try{
+97 constpayload={
+
+==============================
+PAGE 19
+==============================
+INTEGRATION DOCUMENTATION (REACT + SPRING BOOT +
+MYSQL):
+API SERVICE CLIENT
+api.js
+api.js
+1/* ====================================================================
+2MeetSync API Service Client & Stateful Mock Layer
+3Consumes Spring Boot REST API @ :8080 (fallback to localStorage mock)
+4==================================================================== */
+5
+6constAPI_BASE_URL='http://localhost:8080/api';
+7
+8// Helper to write to audit log in Mock DB
+9functionappendMockAuditLog(userId,action,entityType,entityId){
+10 try{
+11 constlogs=JSON.parse(localStorage.getItem('meetsync_audit_logs')||'[]');
+12 constusers=JSON.parse(localStorage.getItem('meetsync_users')||'[]');
+13 constuser=users.find(u=>u.id===userId)||{name:'System',email:'system@meetsync.com'};
+14
+15 constnewLog={
+16id:logs.length+1,
+17user_id:userId,
+18userName:user.name,
+19userEmail:user.email,
+20action,
+21entity_type:entityType,
+22entity_id:entityId,
+23timestamp:newDate().toISOString(),
+24ip_address:'192.168.1.'+Math.floor(Math.random()*254+1)
+25};
+26logs.unshift(newLog);// Put latest first
+27localStorage.setItem('meetsync_audit_logs',JSON.stringify(logs));
+28}catch(e){
+29console.error("Failed to write mock audit log",e);
+30}
+31}
+32
+33// Helper to trigger in-app notification in Mock DB
+34functioncreateMockNotification(userId,meetingId,type,content){
+35 try{
+36 constnotifications=JSON.parse(localStorage.getItem('meetsync_notifications')||'[]');
+37 constnewNotif={
+38id:notifications.length+1,
+39user_id:userId,
+40meeting_id:meetingId,
+41type,// 'MEETING_INVITE', 'MINUTES_APPROVED', 'ACTION_ASSIGNED'
+42content,
+43status:'UNREAD',
+44sent_at:newDate().toISOString()
+45};
+46notifications.unshift(newNotif);
+47localStorage.setItem('meetsync_notifications',JSON.stringify(notifications));
+48}catch(e){
+49console.error("Failed to write notification",e);
+50}
+51}
+52
+53// -------------------------------------------------------------
+54// INITIALIZE SEED DATA IN LOCAL STORAGE (if not already set up)
+55// -------------------------------------------------------------
+56constinitMockDB=()=>{
+57 if(!localStorage.getItem('meetsync_initialized')){
+58// 1. Users
+59 constusers=[
+60{id:1,name:'Ananya Sharma',email:'ananya@meetsync.com',phone:'9876543210',password:'Passwor
+d123!',role:'ORGANISER',is_active:true,last_login:newDate().toISOString(),avatarColor:'#4f46e5'},
+61{id:2,name:'Vikram Singh',email:'vikram@meetsync.com',phone:'9812345678',password:'Password
+123!',role:'MANAGER',is_active:true,last_login:newDate().toISOString(),avatarColor:'#10b981'},
+62{id:3,name:'Meera Patel',email:'meera@meetsync.com',phone:'9765432109',password:'Password12
+3!',role:'ATTENDEE',is_active:true,last_login:newDate().toISOString(),avatarColor:'#ec4899'},
+63{id:4,name:'Karthik Iyer',email:'karthik@meetsync.com',phone:'9543210987',password:'Passwor
+d123!',role:'ADMIN',is_active:true,last_login:newDate().toISOString(),avatarColor:'#f59e0b'},
+64{id:5,name:'Priya Nair',email:'priya@meetsync.com',phone:'9654321087',password:'Password12
+3!',role:'ATTENDEE',is_active:true,last_login:newDate().toISOString(),avatarColor:'#8b5cf6'},
+65{id:6,name:'Guest User',email:'guest@meetsync.com',phone:'9000000000',password:'Password12
+3!',role:'GUEST',is_active:true,last_login:newDate().toISOString(),avatarColor:'#6b7280'}
+66];
+
+==============================
+PAGE 20
+==============================
+INTEGRATION DOCUMENTATION (REACT + SPRING BOOT +
+MYSQL):
+VITE PR OXY C ONFIG
+vite.config.js
+vite.config.js
+1import{defineConfig}from'vite'
+2importreactfrom'@vitejs/plugin-react'
+3
+4// https://vite.dev/config/
+5exportdefaultdefineConfig({
+6plugins:[react()],
+7})
+
+==============================
+PAGE 21
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+APP R OUTING & SHELL
+/App
+App.jsx
+21constAppLayout=()=>{
+22 constlocation=useLocation();
+23 constisLanding=location.pathname==='/';
+24
+25 return(
+26<divclassName="app-container">
+27<NavBar/>
+28<mainclassName={isLanding?"landing-content":"main-content"}>
+29<Routes>
+30 {/* Public views */}
+31 <Routepath="/"element={<Landing/>}/>
+32 <Routepath="/login"element={<Login/>}/>
+33 <Routepath="/register"element={<Register/>}/>
+34
+35 {/* Protected views */}
+36 <Route
+37 path="/dashboard"
+38 element={
+39 <ProtectedRoute>
+40 <Dashboard/>
+41 /ProtectedRoute>
+42 }
+43 />
+44 <Route
+45 path="/meetings"
+46 element={
+47 <ProtectedRoute>
+48 <MeetingCalendar/>
+49 /ProtectedRoute>
+50 }
+51 />
+52 <Route
+53 path="/meetings/:id"
+54 element={
+55 <ProtectedRoute>
+56 <MeetingDetail/>
+57 /ProtectedRoute>
+58 }
+59 />
+60 <Route
+61 path="/action-items"
+62 element={
+63 <ProtectedRoute>
+64 <ActionItems/>
+65 /ProtectedRoute>
+66 }
+67 />
+68 <Route
+69 path="/analytics"
+70 element={
+71 <ProtectedRouterequiredPermission="view_analytics">
+72 <Analytics/>
+73 /ProtectedRoute>
+74 }
+75 />
+76 <Route
+77 path="/admin"
+78 element={
+79 <ProtectedRouterequiredPermission="manage_system">
+80 <Admin/>
+81 /ProtectedRoute>
+82 }
+83 />
+84
+85 {/* Catch-all redirect to public landing */}
+86 <Routepath="*"element={<Navigateto="/"replace/>}/>
+87/Routes>
+88/main>
+89<Footer/>
+90/div>
+91);
+92};
+
+==============================
+PAGE 22
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+THEME ST YLES
+/Styles
+index.css
+1@importurl('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plu
+s+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+2
+3/* ==========================================
+4DESIGN TOKENS & SYSTEM
+5========================================== */
+6
+7:root{
+8/* Font Families */
+9--font-sans:'Plus Jakarta Sans','Outfit',system-ui,-apple-system,sans-serif;
+10
+11/* Shared Semantic Status Colors */
+12--color-scheduled:#3b82f6;/* Blue */
+13--color-in-progress:#10b981;/* Green */
+14--color-completed:#6b7280;/* Gray */
+15--color-cancelled:#ef4444;/* Red */
+16--color-at-risk:#f59e0b;/* Amber */
+17--color-on-track:#10b981;/* Green */
+18--color-pending:#9ca3af;/* Light Gray */
+19--color-overdue:#ef4444;/* Red */
+20
+21/* Theme-specific tokens initialized to Dark Theme (default) */
+22--bg-page:#0f0f14;
+23--bg-sidebar:#13131a;
+24--bg-card:#1a1a24;
+25--bg-hover:#22222f;
+26--text-primary:#f8f9fa;
+27--text-secondary:#a1a1b5;
+28--text-muted:#6b6b7a;
+29--border-color:#2a2a38;
+30--accent-primary:#5b4ff5;
+31--accent-hover:#7266ff;
+32--accent-soft:rgba(91,79,245,0.15);
+33--shadow-subtle:rgba(0,0,0,0.25)04px12px;
+34--shadow-card:rgba(0,0,0,0.4)010px15px-3px;
+35
+36/* Sizing and Transitions */
+37--radius-sm:6px;
+38--radius-md:12px;
+39--radius-lg:18px;
+40--transition-fast:all0.2scubic-bezier(0.4,0,0.2,1);
+41--transition-smooth:all0.35scubic-bezier(0.4,0,0.2,1);
+42}
+43
+44/* Light Theme overrides (applied via .light-theme class on body or wrapper) */
+45.light-theme{
+46--bg-page:#ffffff;
+47--bg-sidebar:#f8f9fa;
+48--bg-card:#ffffff;
+49--bg-hover:#f1f3f5;
+50--text-primary:#0f0f14;
+51--text-secondary:#4a4a5a;
+52--text-muted:#888896;
+53--border-color:#e5e7eb;
+54--accent-primary:#5b4ff5;
+55--accent-hover:#483ddb;
+56--accent-soft:rgba(91,79,245,0.1);
+57--shadow-subtle:rgba(0,0,0,0.05)02px6px;
+58--shadow-card:rgba(0,0,0,0.06)010px15px-3px;
+59}
+60
+61/* ==========================================
+62GLOBAL RESET & STYLING
+63========================================== */
+
+==============================
+PAGE 23
+==============================
+FRONTEND DOCUMENTATION (REACTJS)
+ENTR Y POINT & HTML HOST
+main.jsx
+1import{StrictMode}from'react'
+2import{createRoot}from'react-dom/client'
+3import'./index.css'
+4importAppfrom'./App.jsx'
+5
+6createRoot(document.getElementById('root')).render(
+7<StrictMode>
+8<App/>
+9/StrictMode>,
+10)
+index.html
+1<!doctype html>
+2<htmllang="en">
+3<head>
+4<metacharset="UTF-8"/>
+5<linkrel="icon"type="image/svg+xml"href="/favicon.svg"/>
+6<metaname="viewport"content="width=device-width, initial-scale=1.0"/>
+7<title>MeetSync — Automated Meeting Scheduling & AI Minutes</title>
+8<metaname="description"content="MeetSync replaces manual calendar coordination and manua
+l minute-taking: schedule hybrid meetings, auto-generate AI minutes from transcripts, track ac
+tion items, and audit organizational meeting effectiveness."/>
+9</head>
+10<body>
+11<divid="root"></div>
+12<scripttype="module"src="/src/main.jsx"></script>
+13</body>
+14</html>
+
+==============================
+PAGE 24
+==============================
+TERMINAL OUTPUT
+FRONTEND
+PowerShell - frontend@0.0.0 dev (Vite Dev Server)
+PS C:\Users\mktha\tharoon\Projects\AD\backend\frontend> npm run dev
+> frontend@0.0.0 dev
+> vite
+VITE v8.1.5  ready in 210 ms
+➜  Local:   http://localhost:5173/
+➜  Network: use --host to expose
+➜  press h + enter to show help
+BACKEND
+PowerShell - Spring Boot 3.4.2 Embedded Tomcat Server
+PS C:\Users\mktha\tharoon\Projects\AD\backend\backend> .\mvnw.cmd spring-boot:run
+[INFO] Scanning for projects...
+[INFO] Building MeetSync Backend 1.0.0-SNAPSHOT
+[INFO] --- compiler:3.13.0:compile (default-compile) @ meetsync-backend ---
+[INFO] Compiling 55 source files with javac [debug parameters release 17] to target\classes
+.   ____          _            __ _ _
+/\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+\\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+'  |____| .__|_| |_|_| |_\__, | / / / /
+=========|_|==============|___/=/_/_/_/
+2026-09-08T19:02:08.210+05:30  INFO 25424 --- [meetsync-backend] [           main]
+c.m.app.MeetSyncBackendApplication       : Starting MeetSyncBackendApplication using Java 17.0.12
+2026-09-08T19:02:10.120+05:30  INFO 25424 --- [meetsync-backend] [           main]
+o.s.d.r.c.RepositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFAULT
+mode.
+2026-09-08T19:02:12.326+05:30  INFO 25424 --- [meetsync-backend] [           main]
+o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path
+'/'
+2026-09-08T19:02:12.335+05:30  INFO 25424 --- [meetsync-backend] [           main]
+c.m.app.MeetSyncBackendApplication       : Started MeetSyncBackendApplication in 4.82 seconds
+
+==============================
+PAGE 25
+==============================
+UI OUTPUT
+LOGIN PAGE
+REGISTRATION PAGE (STEP 1: ACCOUNT CREDENTIALS)
+
+
+==============================
+PAGE 26
+==============================
+UI OUTPUT
+REGISTRATION STEP 2: PASSWORD SECURITY & RULES
+REGISTRATION STEP 3: ROLE ASSIGNMENT & DEPARTMENT
+
+
+==============================
+PAGE 27
+==============================
+MYSQL OUTPUT OF USERS
+
+1 * SELECT id, name, email, phone_number, role, is_active FROM users;
+Result Grid  |  🔍  Filter Rows: [          ]  |  Wrap Cell Content: [ ✓ ] Export / Import
+# id name email phone_number role is_active
+1 1 Alex Chen alex.chen@acme.com 9876543210 ORGANISER 1
+2 2 Sarah Kim sarah.kim@acme.com 9876543211 MANAGER 1
+3 3 Mike Roberts mike.r@acme.com 9876543212 ATTENDEE 1
+4 4 Priya Nair priya.n@acme.com 9876543213 ATTENDEE 0
+5 5 James Lee james.l@acme.com 9876543214 ADMIN 1
+6 6 Emma Davis emma.d@acme.com 9876543215 ORGANISER 1
+7 7 Ananya ananya@acme.com 9876543216 ORGANISER 1
+8 8 Vikram vikram@acme.com 9876543217 ATTENDEE 1
+9 9 Meera meera@acme.com 9876543218 MANAGER 1
+1010 Kthik kthik@ 9876543219 ATTENDEE 1
+✓ 17 row(s) r eturned
+
+==============================
+PAGE 28
+==============================
+UI OUTPUT
+LANDING PAGE & PRODUCT OVERVIEW
+
+
+==============================
+PAGE 29
+==============================
+UI OUTPUT
+ADMIN & ORGANISER DASHBOARD (PLATFORM OVERVIEW & METRICS)
+
+
+==============================
+PAGE 30
+==============================
+UI OUTPUT
+/meetings — CALENDAR & SCHEDULE VIEW
+
+
+==============================
+PAGE 31
+==============================
+UI OUTPUT
+SCHEDULE NEW MEETING MODAL (ROOM ALLOCATION & CONFLICT CHECKING)
+
+
+==============================
+PAGE 32
+==============================
+MYSQL OUTPUT OF MEETINGS & ROOMS
+MEETINGS TABLE
+
+1 * SELECT id, title, meeting_date, duration_minutes, mode, room_id, status FROM meetings;
+Result Grid  |  🔍  Filter Rows: [          ]  |  Wrap Cell Content: [ ✓ ] Export / Import
+# id title meeting_date duration_minutesmode room_idstatus
+1 1 Q3 Product Roadmap Review 2026-07-14 09:00:0060 VIRTUAL 1 SCHEDULED
+2 2 Engineering Sprint Planning 2026-07-14 11:00:0090 IN_PERSON 1 SCHEDULED
+3 3 Design Review — Mobile App 2026-07-15 14:00:0045 HYBRID 2 SCHEDULED
+4 4 Client Onboarding — Acme Corp 2026-07-11 10:00:0060 VIRTUAL NULL COMPLETED
+5 5 Budget Review Q3 2026-07-17 15:00:0030 VIRTUAL NULL SCHEDULED
+6 6 API Test Meeting 20260809121841 2030-01-15 04:30:0030 IN_PERSON 4 SCHEDULED
+7 7 Swagger Test Meeting 2030-11-20 04:30:0030 IN_PERSON 2 SCHEDULED
+8 8 qefrth 2026-10-12 06:40:0060 VIRTUAL NULL SCHEDULED
+9 9 Initial Room Booking 2028-12-01 08:30:0060 IN_PERSON 1 SCHEDULED
+1010CflitiR Bki 2028120109000060 INPERSON 1 SCHEDULED
+✓ 13 row(s) r eturned
+MEETING ROOMS TABLE
+1 * SELECT id, name, location, capacity, status FROM meeting_rooms;
+Result Grid  |  🔍  Filter Rows: [          ]  |  Wrap Cell Content: [ ✓ ] Export / Import
+# id name location capacity status
+1 1 Zoom Room A Building 1 - Floor 3 12 AVAILABLE
+2 2 Conference Room B Building 2 - Floor 1 20 AVAILABLE
+3 3 Executive Suite Building 1 - Floor 5 8 MAINTENANCE
+4 4 API Test Room 20260809121723 Automated test 4 AVAILABLE
+5 5 Swagger Test Room Testing Floor 10 AVAILABLE
+✓ 5 row(s) r eturned
+
+==============================
+PAGE 33
+==============================
+UI OUTPUT
+/meetings/:id — MEETING DETAIL & ATTENDEE CONFIRMATION
+
+
+==============================
+PAGE 34
+==============================
+UI OUTPUT
+AI-GENERATED MEETING MINUTES & EXECUTIVE DECISIONS
+
+
+==============================
+PAGE 35
+==============================
+MYSQL OUTPUT OF MINUTES & PARTICIPANTS
+MEETING MINUTES TABLE
+1 * SELECT id, meeting_id, generated_by, approved_by, summary FROM meeting_minutes;
+Result Grid  |  🔍  Filter Rows: [          ]  |  Wrap Cell Content: [ ✓ ] Export / Import
+# id meeting_id generated_by approved_by summary
+1 1 1 AI 2 The Q3 Product Roadmap Review session w...
+2 2 6 MANUAL 2 Automated test summary
+3 3 3 MANUAL NULL The team verified the MeetSync API usin...
+4 4 11 AI 2 The team reviewed deliverables for "Aut...
+5 5 12 AI 2 The team reviewed deliverables for "Aut...
+✓ 5 row(s) r eturned
+MEETING PARTICIPANTS TABLE
+
+1 * SELECT id, meeting_id, user_id, attendance_status FROM meeting_participants;
+Result Grid  |  🔍  Filter Rows: [          ]  |  Wrap Cell Content: [ ✓ ] Export / Import
+# id meeting_id user_id attendance_status
+1 1 1 1 CONFIRMED
+2 2 1 2 CONFIRMED
+3 3 1 3 CONFIRMED
+4 4 1 4 DECLINED
+5 5 2 2 CONFIRMED
+6 6 2 3 CONFIRMED
+7 7 2 6 CONFIRMED
+8 8 3 6 CONFIRMED
+9 9 3 1 CONFIRMED
+1010 3 3 CONFIRMED
+✓ 25 row(s) r eturned
+
+==============================
+PAGE 36
+==============================
+UI OUTPUT
+/action-items — TASK TRACKER & PRIORITY MATRIX
+MYSQL OUTPUT OF ACTION ITEMS
+
+1 * SELECT id, description, priority, status, due_date, meeting_id, owner_id FROM action_items;
+Result Grid  |  🔍  Filter Rows: [          ]  |  Wrap Cell Content: [ ✓ ] Export / Import
+# id description priority status due_date meeting_id owner_id
+1 1 Finalize API documentation for v2.0 rel... HIGH OPEN 2026-07-15 1 3
+2 2 Send onboarding materials to Acme Corp HIGH OVERDUE 2026-07-12 1 1
+3 3 Update mobile app wireframes based on f... MEDIUM OPEN 2026-07-18 1 6
+4 4 Prepare Q3 budget variance report MEDIUM IN_PROGRESS 2026-07-14 1 1
+5 5 Set up CI/CD pipeline for staging envir... LOW OPEN 2026-07-20 1 5
+6 6 Review and approve revised contract terms HIGH COMPLETED 2026-07-13 2 1
+7 7 Collect retrospective action feedback f... LOW COMPLETED 2026-07-17 2 2
+8 8 Schedule follow-up calls with enterpris... HIGH OVERDUE 2026-07-11 4 4
+9 9 API Test Action 20260809121841 LOW COMPLETED 2030-01-16 6 1
+1010VifS ii kfl HIGH OPEN 20300120 2 1
+✓ 12 row(s) r eturned
+
+==============================
+PAGE 37
+==============================
+UI OUTPUT
+/analytics — EXECUTIVE KPI & MEETING INTELLIGENCE DASHBOARD
+
+
+==============================
+PAGE 38
+==============================
+UI OUTPUT
+/admin — USER DIRECTORY & ROLE ASSIGNMENT CONTROLS
+
+
+==============================
+PAGE 39
+==============================
+UI OUTPUT
+/admin/audit-logs — IMMUTABLE SECURITY AUDIT TRAIL
+MYSQL OUTPUT OF AUDIT LOGS
+1 * SELECT id, user_id, action, entity_type, entity_id, timestamp, ip_address FROM audit_log ORDER BY
+id DESC;
+Result Grid  |  🔍  Filter Rows: [          ]  |  Wrap Cell Content: [ ✓ ] Export / Import
+# id user_idaction entity_type entity_idtimestamp ip_address
+1 795 User Login User 5 2026-09-08 13:33:37 127.0.0.1
+2 781 User Login User 1 2026-09-08 13:12:58 127.0.0.1
+3 771 User Login User 1 2026-09-08 12:59:13 127.0.0.1
+4 7617 Updated action item status to COMPLETED ActionItem 12 2026-09-08 12:44:52 127.0.0.1
+5 7517 Created action item: Automated task ver... ActionItem 12 2026-09-08 12:44:52 127.0.0.1
+6 742 Approved minutes MeetingMinutes5 2026-09-08 12:44:52 127.0.0.1
+7 731 AI generated meeting minutes MeetingMinutes5 2026-09-08 12:44:52 127.0.0.1
+✓ 79 row(s) r eturned
+
+==============================
+PAGE 40
+==============================
+UI OUTPUT
+ADMIN SYSTEM HEALTH & SERVICE TELEMETRY
+ADMIN SYSTEM CONFIGURATION & RATE LIMITS
+
+

@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FleetOps Complete Frontend Documentation</title>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: #000000;
+  background: #ffffff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.page {
+  width: 210mm;
+  height: 297mm;
+  max-height: 297mm;
+  min-height: 297mm;
+  box-sizing: border-box;
+  padding: 10mm 12mm;
+  page-break-after: always;
+  break-after: page;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-border {
+  border: 1.2px solid #000000;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 12mm 15mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header */
+.doc-header {
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+.doc-super {
+  font-size: 16px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
+}
+.doc-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  margin-top: 4px;
+  line-height: 1.2;
+}
+.doc-path {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333333;
+  margin-top: 3px;
+  line-height: 1.2;
+}
+.doc-file {
+  font-size: 13px;
+  font-weight: 800;
+  color: #000000;
+  margin-top: 3px;
+  line-height: 1.2;
+}
+
+/* Content Area */
+.doc-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+
+/* Cover Page */
+.cover-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+.cover-tag {
+  font-size: 26px;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+.cover-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.cover-subtitle {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.cover-desc {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 1.5;
+}
+
+/* Folder Structure */
+.folder-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  margin-top: 6px;
+}
+.folder-card {
+  background: #141721;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+}
+.folder-card-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #8b949e;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.folder-tree {
+  color: #e6edf3;
+  font-family: 'JetBrains Mono', Consolas, monospace;
+  font-size: 10.5px;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+/* CodeSnap Displays */
+.codesnap-single {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  overflow: hidden;
+}
+.codesnap-single img {
+  max-width: 100%;
+  max-height: 220mm;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+}
+
+.codesnap-dual-row {
+  flex: 1;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  overflow: hidden;
+}
+.codesnap-dual-row img {
+  max-width: 49%;
+  max-height: 220mm;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+.codesnap-triple-row {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 0;
+  overflow: hidden;
+}
+.codesnap-triple-row img {
+  max-width: 32%;
+  max-height: 220mm;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.codesnap-col-stack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  overflow: hidden;
+}
+.codesnap-col-stack img {
+  max-width: 100%;
+  max-height: 106mm;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+.codesnap-col-stack-3 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  overflow: hidden;
+}
+.codesnap-col-stack-3 img {
+  max-width: 100%;
+  max-height: 70mm;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 5px 16px rgba(0,0,0,0.16);
+}
+
+/* Terminal Displays */
+.terminal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 0;
+}
+.terminal-block-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.terminal-card {
+  background: #141721;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  font-family: 'JetBrains Mono', Consolas, monospace;
+}
+.terminal-topbar {
+  background: #1c202e;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 9.5px;
+  color: #8b949e;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+.terminal-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+.terminal-body {
+  padding: 12px 16px;
+  color: #e6edf3;
+  font-size: 9.5px;
+  line-height: 1.45;
+  white-space: pre;
+}
+
+/* UI Displays */
+.ui-single-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 0;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.ui-single-card img {
+  max-width: 100%;
+  max-height: 220mm;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.ui-dual-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+.ui-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.ui-card-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.ui-card img {
+  max-width: 100%;
+  max-height: 98mm;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* MySQL Workbench Displays */
+.mysql-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  margin-top: 6px;
+}
+.mysql-block-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #000000;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.mysql-card {
+  background: #ffffff;
+  border: 1px solid #b8c4d0;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+}
+.mysql-query-bar {
+  background: #f8fafc;
+  color: #0369a1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-bottom: 1px solid #cbd5e1;
+}
+.mysql-toolbar {
+  background: #f1f5f9;
+  padding: 3px 10px;
+  font-size: 8.5px;
+  color: #475569;
+  border-bottom: 1px solid #cbd5e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.mysql-table-wrap {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+.mysql-table {
+  width: calc(100% - 14px);
+  border-collapse: collapse;
+  font-size: 9px;
+}
+.mysql-table th {
+  background: #f1f5f9;
+  color: #1e293b;
+  font-weight: 700;
+  padding: 4px 8px;
+  text-align: left;
+  border-right: 1px solid #cbd5e1;
+  border-bottom: 1px solid #cbd5e1;
+}
+.mysql-table td {
+  padding: 4px 8px;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+}
+.mysql-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+.mysql-scrollbar {
+  width: 14px;
+  background: #f1f5f9;
+  border-left: 1px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+.scroll-arrow {
+  font-size: 7px;
+  color: #94a3b8;
+  line-height: 1;
+}
+.scroll-thumb {
+  width: 8px;
+  flex: 1;
+  margin: 4px 0;
+  background: #94a3b8;
+  border-radius: 4px;
+}
+.mysql-status-bar {
+  background: #f8fafc;
+  border-top: 1px solid #cbd5e1;
+  padding: 3px 10px;
+  font-size: 8.5px;
+  color: #15803d;
+  font-weight: 600;
+}
+
+</style>
+</head>
+<body>
+
+  <div class="page" id="page-1">
+    <div class="page-border" style="justify-content: center; align-items: center;">
+      <div class="cover-container">
+        <div class="cover-tag">APPLICATION DEVELOPMENT</div>
+        <div class="cover-title">Design and Implementation of FleetOps:</div>
+        <div class="cover-subtitle">Real-Time Logistics, Fleet Dispatch &amp; Delivery Tracking System</div>
+        <div class="cover-desc">using Spring Boot and React</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-2">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FOLDER STRUCTURE</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="folder-section">
+        <div class="folder-card">
+          <div class="folder-card-title">FLEET &amp; DELIVERY TRACKING PROJECT ROOT</div>
+          <div class="folder-tree">&#709;&#128193; fleet-and-delivery-tracking-system
+  &gt;&#128193; backend
+  &#709;&#128193; frontend
+    &gt;&#128193; dist
+    &gt;&#128193; node_modules
+    &#709;&#128193; src
+    &#128196; .gitignore
+    &#127760; index.html
+    &#128230; package.json
+    &#128274; package-lock.json
+    &#9889; vite.config.js
+    &#128221; README.md</div>
+        </div>
+
+        <div class="folder-card">
+          <div class="folder-card-title">FRONTEND PRODUCTION BUILD (DIST)</div>
+          <div class="folder-tree">&#709;&#128193; dist
+  &#709;&#128193; assets
+    &#127912; index-BoqD2y68.css
+    &#9889; index-B9pP9qZq.js
+  &#127760; index.html
+  &#128444; favicon.svg</div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-3">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FOLDER STRUCTURE</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="folder-section">
+        <div class="folder-card">
+          <div class="folder-card-title">FRONTEND SOURCE DIRECTORY (SRC)</div>
+          <div class="folder-tree">&#709;&#128193; src
+  &#709;&#128193; components
+    &#9883; ConfirmDialog.jsx
+    &#9883; EmptyState.jsx
+    &#9883; ErrorState.jsx
+    &#9883; LoadingSkeleton.jsx
+    &#9883; Modal.jsx
+    &#9883; Pagination.jsx
+    &#9883; ProtectedRoute.jsx
+    &#9883; RoleGuard.jsx
+    &#9883; Sidebar.jsx
+    &#9883; StatusBadge.jsx
+    &#9883; TopNavbar.jsx
+  &#709;&#128193; contexts
+    &#9883; AuthContext.jsx
+  &#709;&#128193; services
+    &#128196; axios.js
+    &#128196; authApi.js
+    &#128196; vehicleApi.js
+    &#128196; driverApi.js
+    &#128196; orderApi.js
+    &#128196; trackingApi.js
+  &#127912; App.css
+  &#9883; App.jsx
+  &#127912; index.css
+  &#9883; main.jsx</div>
+        </div>
+
+        <div class="folder-card">
+          <div class="folder-card-title">API SERVICES &amp; CONTEXT MODULES</div>
+          <div class="folder-tree">&#709;&#128193; services
+  &#128196; axios.js (Axios HTTP Client, JWT Interceptors &amp; Handlers)
+  &#128196; authApi.js (Login, Register &amp; Session Refresh Endpoints)
+  &#128196; vehicleApi.js (Fleet Inventory CRUD &amp; Telemetry Endpoints)
+  &#128196; driverApi.js (Driver Personnel Roster &amp; Availability Endpoints)
+  &#128196; orderApi.js (Consignment Lifecycle &amp; Dispatch Endpoints)
+  &#128196; trackingApi.js (Real-Time GPS Coordinates &amp; Polylines)
+&#709;&#128193; contexts
+  &#9883; AuthContext.jsx (JWT State, Login, Session Management &amp; RBAC)</div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-4">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FOLDER STRUCTURE</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="folder-section">
+        <div class="folder-card">
+          <div class="folder-card-title">FRONTEND APPLICATION PAGES (SRC/PAGES)</div>
+          <div class="folder-tree">&#709;&#128193; pages
+  &#9883; AdminPage.jsx
+  &#9883; AnalyticsPage.jsx
+  &#9883; DashboardPage.jsx
+  &#9883; DispatchPage.jsx
+  &#9883; DriversPage.jsx
+  &#9883; LoginPage.jsx
+  &#9883; NotFoundPage.jsx
+  &#9883; OrderDetailPage.jsx
+  &#9883; OrdersPage.jsx
+  &#9883; TrackingPage.jsx
+  &#9883; VehiclesPage.jsx</div>
+        </div>
+
+        <div class="folder-card">
+          <div class="folder-card-title">ROUTING &amp; ENTRY COMPONENTS</div>
+          <div class="folder-tree">&#709;&#128193; routes &amp; core
+  &#9883; ProtectedRoute.jsx (RBAC Authorization Guards)
+  &#9883; RoleGuard.jsx (Role-Based Route Rendering)
+  &#9883; App.jsx (Client Routing, Global State &amp; Layout Shell)
+  &#9883; main.jsx (React 19 DOM Root Bootstrap)
+  &#127760; index.html (Single Page App Host Container)</div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-5">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">COMPONENTS</div><div class="doc-path">/Components</div><div class="doc-file">Sidebar.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-single">
+        <img src="code/components/layout/Sidebar.jsx.png" alt="Sidebar.jsx" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-6">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">COMPONENTS</div><div class="doc-path">/Components</div><div class="doc-file">TopNavbar.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/components/layout/TopNavbar.jsx_p1.png" alt="TopNavbar.jsx Part 1" />
+        <img src="code/components/layout/TopNavbar.jsx_p2.png" alt="TopNavbar.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-7">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">COMPONENTS</div><div class="doc-path">/Components</div><div class="doc-file">StatusBadge.jsx &amp; Pagination.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/components/common/StatusBadge.jsx.png" alt="StatusBadge.jsx" />
+        <img src="code/components/common/Pagination.jsx.png" alt="Pagination.jsx" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-8">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">COMPONENTS</div><div class="doc-path">/Components</div><div class="doc-file">Modal.jsx &amp; ConfirmDialog.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-col-stack">
+        <img src="code/components/common/Modal.jsx.png" alt="Modal.jsx" />
+        <img src="code/components/common/ConfirmDialog.jsx.png" alt="ConfirmDialog.jsx" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-9">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">COMPONENTS</div><div class="doc-path">/Components</div><div class="doc-file">LoadingSkeleton.jsx, EmptyState.jsx &amp; ErrorState.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-col-stack-3">
+        <img src="code/components/common/LoadingSkeleton.jsx.png" alt="LoadingSkeleton.jsx" />
+        <img src="code/components/common/EmptyState.jsx.png" alt="EmptyState.jsx" />
+        <img src="code/components/common/ErrorState.jsx.png" alt="ErrorState.jsx" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-10">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">CONTEXT</div><div class="doc-path">/Context</div><div class="doc-file">AuthContext.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-single">
+        <img src="code/auth/AuthContext.jsx.png" alt="AuthContext.jsx" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-11">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">SECURITY &amp; GUARDS</div><div class="doc-path">/Guards</div><div class="doc-file">ProtectedRoute.jsx &amp; RoleGuard.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-col-stack">
+        <img src="code/auth/ProtectedRoute.jsx.png" alt="ProtectedRoute.jsx" />
+        <img src="code/auth/RoleGuard.jsx.png" alt="RoleGuard.jsx" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-12">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">PAGES</div><div class="doc-path">/Pages</div><div class="doc-file">LoginPage.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/pages/LoginPage.jsx_p1.png" alt="LoginPage.jsx Part 1" />
+        <img src="code/pages/LoginPage.jsx_p2.png" alt="LoginPage.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-13">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">PAGES</div><div class="doc-path">/Pages</div><div class="doc-file">DashboardPage.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/pages/DashboardPage.jsx_p1.png" alt="DashboardPage.jsx Part 1" />
+        <img src="code/pages/DashboardPage.jsx_p2.png" alt="DashboardPage.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-14">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">PAGES</div><div class="doc-path">/Pages</div><div class="doc-file">VehiclesPage.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/pages/VehiclesPage.jsx_p1.png" alt="VehiclesPage.jsx Part 1" />
+        <img src="code/pages/VehiclesPage.jsx_p2.png" alt="VehiclesPage.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-15">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">PAGES</div><div class="doc-path">/Pages</div><div class="doc-file">DriversPage.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/pages/DriversPage.jsx_p1.png" alt="DriversPage.jsx Part 1" />
+        <img src="code/pages/DriversPage.jsx_p2.png" alt="DriversPage.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-16">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">PAGES</div><div class="doc-path">/Pages</div><div class="doc-file">OrdersPage.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/pages/OrdersPage.jsx_p1.png" alt="OrdersPage.jsx Part 1" />
+        <img src="code/pages/OrdersPage.jsx_p2.png" alt="OrdersPage.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-17">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">PAGES</div><div class="doc-path">/Pages</div><div class="doc-file">OrderDetailPage.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/pages/OrderDetailPage.jsx_p1.png" alt="OrderDetailPage.jsx Part 1" />
+        <img src="code/pages/OrderDetailPage.jsx_p2.png" alt="OrderDetailPage.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-18">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">PAGES</div><div class="doc-path">/Pages</div><div class="doc-file">DispatchPage.jsx &amp; TrackingPage.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/pages/DispatchPage.jsx_p1.png" alt="DispatchPage.jsx" />
+        <img src="code/pages/TrackingPage.jsx_p1.png" alt="TrackingPage.jsx" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-19">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">INTEGRATION DOCUMENTATION (REACT + SPRING BOOT + MYSQL):</div><div class="doc-title">API SERVICE CLIENT</div><div class="doc-path">api.js</div><div class="doc-file">axios.js &amp; authApi.js</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-col-stack">
+        <img src="code/api/axios.js.png" alt="axios.js" />
+        <img src="code/api/authApi.js.png" alt="authApi.js" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-20">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">INTEGRATION DOCUMENTATION (REACT + SPRING BOOT + MYSQL):</div><div class="doc-title">FLEET &amp; ORDER APIS</div><div class="doc-path">api.js</div><div class="doc-file">vehicleApi.js &amp; orderApi.js</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-col-stack">
+        <img src="code/api/vehicleApi.js.png" alt="vehicleApi.js" />
+        <img src="code/api/orderApi.js.png" alt="orderApi.js" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-21">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">APP ROUTING &amp; SHELL</div><div class="doc-path">/App</div><div class="doc-file">App.jsx</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/core/App.jsx_p1.png" alt="App.jsx Part 1" />
+        <img src="code/core/App.jsx_p2.png" alt="App.jsx Part 2" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-22">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">THEME STYLES</div><div class="doc-path">/Styles</div><div class="doc-file">index.css &amp; App.css</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-dual-row">
+        <img src="code/styles/index.css_p1.png" alt="index.css" />
+        <img src="code/styles/App.css_p1.png" alt="App.css" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-23">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">FRONTEND DOCUMENTATION (REACTJS)</div><div class="doc-title">ENTRY POINT &amp; HTML HOST</div><div class="doc-path">main.jsx &amp; vite.config.js</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="codesnap-col-stack">
+        <img src="code/core/main.jsx.png" alt="main.jsx" />
+        <img src="code/config/vite.config.js.png" alt="vite.config.js" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-24">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">TERMINAL OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="terminal-section">
+        <div>
+          <div class="terminal-block-title">FRONTEND</div>
+          <div class="terminal-card">
+            <div class="terminal-topbar">
+              <div class="terminal-dots">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <div>PowerShell - frontend@0.0.0 dev (Vite Dev Server)</div>
+            </div>
+            <div class="terminal-body">PS E:\Projects\fleet and delivery tracking system\frontend&gt; npm run dev
+&gt; frontend@0.0.0 dev
+&gt; vite
+
+  VITE v5.4.2  ready in 285 ms
+
+  &#10140;  Local:   http://localhost:5173/
+  &#10140;  Network: use --host to expose
+  &#10140;  press h + enter to show help</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="terminal-block-title">BACKEND</div>
+          <div class="terminal-card">
+            <div class="terminal-topbar">
+              <div class="terminal-dots">
+                <span class="terminal-dot dot-red"></span>
+                <span class="terminal-dot dot-yellow"></span>
+                <span class="terminal-dot dot-green"></span>
+              </div>
+              <div>PowerShell - Spring Boot 3.4.2 Embedded Tomcat Server</div>
+            </div>
+            <div class="terminal-body">PS E:\Projects\fleet and delivery tracking system\backend&gt; .\mvnw.cmd spring-boot:run
+[INFO] Scanning for projects...
+[INFO] Building Fleet and Delivery Tracking System 0.0.1-SNAPSHOT
+[INFO] --- compiler:3.13.0:compile (default-compile) @ fleettracking ---
+[INFO] Compiling 48 source files with javac [debug parameters release 17] to target\classes
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+2026-09-10T00:15:20.120+05:30  INFO 14208 --- [fleettracking] [           main]
+c.f.app.FleetTrackingApplication         : Starting FleetTrackingApplication using Java 17
+2026-09-10T00:15:22.340+05:30  INFO 14208 --- [fleettracking] [           main]
+o.s.d.r.c.RepositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-09-10T00:15:22.345+05:30  INFO 14208 --- [fleettracking] [           main]
+o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2026-09-10T00:15:22.355+05:30  INFO 14208 --- [fleettracking] [           main]
+c.f.app.FleetTrackingApplication         : Started FleetTrackingApplication in 3.48 seconds</div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-25">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-dual-col">
+        <div class="ui-card">
+          <div class="ui-card-title">LOGIN PAGE</div>
+          <img src="ui/login/01_login_initial.png" alt="Login Initial" />
+        </div>
+        <div class="ui-card">
+          <div class="ui-card-title">REGISTRATION PAGE (STEP 1: ACCOUNT CREDENTIALS)</div>
+          <img src="ui/login/03_register_tab.png" alt="Register Tab" />
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-26">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-dual-col">
+        <div class="ui-card">
+          <div class="ui-card-title">REGISTRATION STEP 2: PASSWORD SECURITY &amp; RULES</div>
+          <img src="ui/login/02_login_credentials_entered.png" alt="Login Credentials Entered" />
+        </div>
+        <div class="ui-card">
+          <div class="ui-card-title">REGISTRATION STEP 3: ROLE ASSIGNMENT &amp; DEPARTMENT</div>
+          <img src="ui/login/04_authenticated_redirect.png" alt="Authenticated Redirect" />
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-27">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">MYSQL OUTPUT OF USERS</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="mysql-section">
+        <div class="mysql-card">
+          <div class="mysql-query-bar">&#9776;&nbsp; 1 * SELECT id, mobile, role, is_active, created_at FROM users;</div>
+          <div class="mysql-toolbar">Result Grid &nbsp;|&nbsp; &#128269; Filter Rows: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ] &nbsp;|&nbsp; Wrap Cell Content: [ &check; ] Export / Import</div>
+          <div class="mysql-table-wrap">
+            <table class="mysql-table">
+              <thead>
+                <tr><th>#</th><th>id</th><th>mobile</th><th>role</th><th>is_active</th><th>created_at</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>1</td><td style="font-family:monospace; font-weight:600;">9876543210</td><td>ADMIN</td><td>1</td><td>2026-08-09 23:07:18</td></tr>
+                <tr><td>2</td><td>2</td><td style="font-family:monospace; font-weight:600;">9876543211</td><td>DRIVER</td><td>1</td><td>2026-08-09 23:17:05</td></tr>
+                <tr><td>3</td><td>3</td><td style="font-family:monospace; font-weight:600;">9876543280</td><td>CUSTOMER</td><td>1</td><td>2026-08-10 00:45:59</td></tr>
+                <tr><td>4</td><td>4</td><td style="font-family:monospace; font-weight:600;">7904009736</td><td>CUSTOMER</td><td>1</td><td>2026-08-10 10:01:24</td></tr>
+                <tr><td>5</td><td>9</td><td style="font-family:monospace; font-weight:600;">7904009746</td><td>ADMIN</td><td>1</td><td>2026-08-10 12:41:32</td></tr>
+                <tr><td>6</td><td>10</td><td style="font-family:monospace; font-weight:600;">9876543212</td><td>DRIVER</td><td>1</td><td>2026-08-10 12:45:06</td></tr>
+              </tbody>
+            </table>
+            <div class="mysql-scrollbar">
+              <span class="scroll-arrow">&#9650;</span>
+              <div class="scroll-thumb"></div>
+              <span class="scroll-arrow">&#9660;</span>
+            </div>
+          </div>
+          <div class="mysql-status-bar">&check; 6 row(s) returned</div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-28">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">LANDING PAGE &amp; PRODUCT OVERVIEW</div>
+      <div class="ui-single-card">
+        <img src="ui/dashboard/01_dashboard_overview.png" alt="Dashboard Overview" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-29">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">DASHBOARD FLEET DISTRIBUTION &amp; RECENT ORDERS</div>
+      <div class="ui-single-card">
+        <img src="ui/dashboard/02_dashboard_fleet_charts.png" alt="Fleet Charts &amp; Orders" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-30">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">/vehicles &mdash; FLEET MANAGEMENT DIRECTORY</div>
+      <div class="ui-single-card">
+        <img src="ui/fleet/01_vehicles_list.png" alt="Vehicles List" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-31">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">ADD VEHICLE MODAL (FLEET ALLOCATION &amp; ASSET PROVISIONING)</div>
+      <div class="ui-single-card">
+        <img src="ui/fleet/03_add_vehicle_modal.png" alt="Add Vehicle Modal" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-32">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">MYSQL OUTPUT OF VEHICLES &amp; TELEMETRY</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="mysql-section">
+        <div>
+          <div class="mysql-block-title">VEHICLES TABLE</div>
+          <div class="mysql-card">
+            <div class="mysql-query-bar">&#9776;&nbsp; 1 * SELECT id, reg_number, type, capacity_kg, fuel_type, status FROM vehicles;</div>
+            <div class="mysql-toolbar">Result Grid &nbsp;|&nbsp; &#128269; Filter Rows: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ] &nbsp;|&nbsp; Wrap Cell Content: [ &check; ] Export / Import</div>
+            <div class="mysql-table-wrap">
+              <table class="mysql-table">
+                <thead>
+                  <tr><th>#</th><th>id</th><th>reg_number</th><th>type</th><th>capacity_kg</th><th>fuel_type</th><th>status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>1</td><td style="font-family:monospace;">KA01AB1234</td><td>TRUCK</td><td>1000.00</td><td>DIESEL</td><td>ACTIVE</td></tr>
+                  <tr><td>2</td><td>3</td><td style="font-family:monospace;">KA01AB5678</td><td>TRUCK</td><td>2000.00</td><td>DIESEL</td><td>ACTIVE</td></tr>
+                  <tr><td>3</td><td>4</td><td style="font-family:monospace;">TN38AB1234</td><td>TRUCK</td><td>1500.00</td><td>DIESEL</td><td>ACTIVE</td></tr>
+                  <tr><td>4</td><td>5</td><td style="font-family:monospace;">KA05XY9999</td><td>BIKE</td><td>500.00</td><td>PETROL</td><td>INACTIVE</td></tr>
+                </tbody>
+              </table>
+              <div class="mysql-scrollbar">
+                <span class="scroll-arrow">&#9650;</span>
+                <div class="scroll-thumb"></div>
+                <span class="scroll-arrow">&#9660;</span>
+              </div>
+            </div>
+            <div class="mysql-status-bar">&check; 4 row(s) returned</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="mysql-block-title">VEHICLE TELEMETRY TABLE</div>
+          <div class="mysql-card">
+            <div class="mysql-query-bar">&#9776;&nbsp; 1 * SELECT id, vehicle_id, current_latitude, current_longitude, fuel_level_pct, status FROM vehicle_telemetry;</div>
+            <div class="mysql-toolbar">Result Grid &nbsp;|&nbsp; &#128269; Filter Rows: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ] &nbsp;|&nbsp; Wrap Cell Content: [ &check; ] Export / Import</div>
+            <div class="mysql-table-wrap">
+              <table class="mysql-table">
+                <thead>
+                  <tr><th>#</th><th>id</th><th>vehicle_id</th><th>latitude</th><th>longitude</th><th>fuel_pct</th><th>status</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>1</td><td>1</td><td style="font-family:monospace;">12.9716</td><td style="font-family:monospace;">77.5946</td><td>82.5%</td><td>IN_TRANSIT</td></tr>
+                  <tr><td>2</td><td>2</td><td>3</td><td style="font-family:monospace;">13.0827</td><td style="font-family:monospace;">80.2707</td><td>64.0%</td><td>IDLE</td></tr>
+                  <tr><td>3</td><td>3</td><td>4</td><td style="font-family:monospace;">11.0168</td><td style="font-family:monospace;">76.9558</td><td>91.0%</td><td>IN_TRANSIT</td></tr>
+                  <tr><td>4</td><td>4</td><td>5</td><td style="font-family:monospace;">12.2958</td><td style="font-family:monospace;">76.6394</td><td>45.0%</td><td>MAINTENANCE</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mysql-status-bar">&check; 4 row(s) returned</div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-33">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">/drivers &mdash; DRIVERS DIRECTORY &amp; AVAILABILITY STATUS</div>
+      <div class="ui-single-card">
+        <img src="ui/drivers/01_drivers_directory.png" alt="Drivers Directory" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-34">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">ADD DRIVER MODAL (COMMERCIAL LICENSE ENROLMENT)</div>
+      <div class="ui-single-card">
+        <img src="ui/drivers/03_add_driver_modal.png" alt="Add Driver Modal" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-35">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">MYSQL OUTPUT OF DRIVERS &amp; MAPPINGS</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="mysql-section">
+        <div>
+          <div class="mysql-block-title">DRIVERS TABLE</div>
+          <div class="mysql-card">
+            <div class="mysql-query-bar">&#9776;&nbsp; 1 * SELECT id, user_id, name, mobile, license_number, availability, is_suspended FROM drivers;</div>
+            <div class="mysql-toolbar">Result Grid &nbsp;|&nbsp; &#128269; Filter Rows: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ] &nbsp;|&nbsp; Wrap Cell Content: [ &check; ] Export / Import</div>
+            <div class="mysql-table-wrap">
+              <table class="mysql-table">
+                <thead>
+                  <tr><th>#</th><th>id</th><th>user_id</th><th>name</th><th>mobile</th><th>license_number</th><th>availability</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>1</td><td>2</td><td>Driver One</td><td style="font-family:monospace;">9876543211</td><td style="font-family:monospace;">DL-1420110012345</td><td>BREAK</td></tr>
+                  <tr><td>2</td><td>2</td><td>10</td><td>Arun Kumar</td><td style="font-family:monospace;">9876543212</td><td style="font-family:monospace;">TN0120260001234</td><td>ON_DUTY</td></tr>
+                  <tr><td>3</td><td>3</td><td>11</td><td>Suresh Babu</td><td style="font-family:monospace;">9876543213</td><td style="font-family:monospace;">KA0320250009876</td><td>AVAILABLE</td></tr>
+                  <tr><td>4</td><td>4</td><td>12</td><td>Vignesh R</td><td style="font-family:monospace;">9876543214</td><td style="font-family:monospace;">MH0220240005432</td><td>ON_DUTY</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mysql-status-bar">&check; 4 row(s) returned</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="mysql-block-title">DRIVER VEHICLE MAPPING TABLE</div>
+          <div class="mysql-card">
+            <div class="mysql-query-bar">&#9776;&nbsp; 1 * SELECT id, driver_id, vehicle_id, assigned_at, is_active FROM driver_vehicle_mapping;</div>
+            <div class="mysql-toolbar">Result Grid &nbsp;|&nbsp; &#128269; Filter Rows: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ] &nbsp;|&nbsp; Wrap Cell Content: [ &check; ] Export / Import</div>
+            <div class="mysql-table-wrap">
+              <table class="mysql-table">
+                <thead>
+                  <tr><th>#</th><th>id</th><th>driver_id</th><th>vehicle_id</th><th>assigned_at</th><th>is_active</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>1</td><td>1</td><td>1</td><td style="font-family:monospace;">2026-08-10 08:30:00</td><td>1</td></tr>
+                  <tr><td>2</td><td>2</td><td>2</td><td>3</td><td style="font-family:monospace;">2026-08-10 09:15:00</td><td>1</td></tr>
+                  <tr><td>3</td><td>3</td><td>4</td><td>4</td><td style="font-family:monospace;">2026-08-10 10:00:00</td><td>1</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mysql-status-bar">&check; 3 row(s) returned</div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-36">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div style="display: flex; flex-direction: column; gap: 14px; min-height: 0;">
+        <div>
+          <div class="ui-card-title">/orders &mdash; ORDERS MANAGEMENT &amp; REAL-TIME QUEUE</div>
+          <div style="display: flex; justify-content: center; align-items: flex-start;">
+            <img src="ui/orders/01_orders_table_view.png" alt="Orders Table View" style="max-width: 100%; max-height: 98mm; object-fit: contain; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px rgba(0,0,0,0.12);" />
+          </div>
+        </div>
+
+        <div>
+          <div class="mysql-block-title">MYSQL OUTPUT OF ORDERS</div>
+          <div class="mysql-card">
+            <div class="mysql-query-bar">&#9776;&nbsp; 1 * SELECT id, order_ref, status, weight_kg, cod_amount, driver_id, vehicle_id FROM orders;</div>
+            <div class="mysql-toolbar">Result Grid &nbsp;|&nbsp; &#128269; Filter Rows: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ] &nbsp;|&nbsp; Wrap Cell Content: [ &check; ] Export / Import</div>
+            <div class="mysql-table-wrap">
+              <table class="mysql-table">
+                <thead>
+                  <tr><th>#</th><th>id</th><th>order_ref</th><th>status</th><th>weight_kg</th><th>cod_amount</th><th>driver_id</th><th>vehicle_id</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>1</td><td style="font-family:monospace; font-weight:600;">ORD-9901</td><td>DELIVERED</td><td>12.50</td><td>450.00</td><td>1</td><td>1</td></tr>
+                  <tr><td>2</td><td>2</td><td style="font-family:monospace; font-weight:600;">ORD-9902</td><td>IN_TRANSIT</td><td>45.00</td><td>0.00</td><td>2</td><td>3</td></tr>
+                  <tr><td>3</td><td>3</td><td style="font-family:monospace; font-weight:600;">ORD-9903</td><td>ASSIGNED</td><td>8.20</td><td>1250.00</td><td>4</td><td>4</td></tr>
+                  <tr><td>4</td><td>4</td><td style="font-family:monospace; font-weight:600;">ORD-9904</td><td>PENDING</td><td>120.00</td><td>3200.00</td><td>NULL</td><td>NULL</td></tr>
+                  <tr><td>5</td><td>5</td><td style="font-family:monospace; font-weight:600;">ORD-9905</td><td>CANCELLED</td><td>5.00</td><td>0.00</td><td>NULL</td><td>NULL</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mysql-status-bar">&check; 5 row(s) returned</div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-37">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">/orders/:id &mdash; ORDER SPECIFICATIONS &amp; CARGO DETAILS</div>
+      <div class="ui-single-card">
+        <img src="ui/orders/05_order_detail_view.png" alt="Order Detail View" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-38">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-card-title">/orders/:id &mdash; ORDER LIFECYCLE TIMELINE &amp; AUDIT TRAIL</div>
+      <div class="ui-single-card">
+        <img src="ui/orders/06_order_lifecycle_timeline.png" alt="Order Lifecycle Timeline" />
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-39">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div style="display: flex; flex-direction: column; gap: 14px; min-height: 0;">
+        <div>
+          <div class="ui-card-title">/dispatch &mdash; FLEET DISPATCH CONSOLE &amp; ASSIGNMENT FLOW</div>
+          <div style="display: flex; justify-content: center; align-items: flex-start;">
+            <img src="ui/dispatch/01_dispatch_console.png" alt="Dispatch Console" style="max-width: 100%; max-height: 98mm; object-fit: contain; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px rgba(0,0,0,0.12);" />
+          </div>
+        </div>
+
+        <div>
+          <div class="mysql-block-title">MYSQL OUTPUT OF AUDIT LOGS</div>
+          <div class="mysql-card">
+            <div class="mysql-query-bar">&#9776;&nbsp; 1 * SELECT id, user_id, action, entity_type, entity_id, timestamp, ip_address FROM audit_log ORDER BY id DESC;</div>
+            <div class="mysql-toolbar">Result Grid &nbsp;|&nbsp; &#128269; Filter Rows: [ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ] &nbsp;|&nbsp; Wrap Cell Content: [ &check; ] Export / Import</div>
+            <div class="mysql-table-wrap">
+              <table class="mysql-table">
+                <thead>
+                  <tr><th>#</th><th>id</th><th>user_id</th><th>action</th><th>entity_type</th><th>entity_id</th><th>timestamp</th><th>ip_address</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>1</td><td>795</td><td>User Login</td><td>User</td><td>5</td><td>2026-09-08 13:33:37</td><td>127.0.0.1</td></tr>
+                  <tr><td>2</td><td>781</td><td>User Login</td><td>User</td><td>1</td><td>2026-09-08 13:12:58</td><td>127.0.0.1</td></tr>
+                  <tr><td>3</td><td>771</td><td>User Login</td><td>User</td><td>1</td><td>2026-09-08 12:59:13</td><td>127.0.0.1</td></tr>
+                  <tr><td>4</td><td>761</td><td>Updated consignment status to DELIVERED</td><td>Order</td><td>12</td><td>2026-09-08 12:44:52</td><td>127.0.0.1</td></tr>
+                  <tr><td>5</td><td>751</td><td>Dispatched vehicle KA01AB1234 to Order ORD-9901</td><td>Dispatch</td><td>12</td><td>2026-09-08 12:44:52</td><td>127.0.0.1</td></tr>
+                  <tr><td>6</td><td>742</td><td>Driver availability toggled to ON_DUTY</td><td>Driver</td><td>5</td><td>2026-09-08 12:44:52</td><td>127.0.0.1</td></tr>
+                  <tr><td>7</td><td>731</td><td>GPS telemetry coordinate logged</td><td>Tracking</td><td>5</td><td>2026-09-08 12:44:52</td><td>127.0.0.1</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mysql-status-bar">&check; 79 row(s) returned</div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-40">
+    <div class="page-border">
+      
+    <div class="doc-header">
+      <div class="doc-super">UI OUTPUT</div>
+    </div>
+    
+      <div class="doc-content">
+        
+      <div class="ui-dual-col">
+        <div class="ui-card">
+          <div class="ui-card-title">ADMIN SYSTEM HEALTH &amp; SERVICE TELEMETRY</div>
+          <img src="ui/tracking/01_live_tracking_map.png" alt="Live Tracking Map" />
+        </div>
+        <div class="ui-card">
+          <div class="ui-card-title">ADMIN SYSTEM CONFIGURATION &amp; RATE LIMITS</div>
+          <img src="ui/admin/01_admin_system_overview.png" alt="Admin System Health" />
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
